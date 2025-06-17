@@ -2,13 +2,14 @@ version: "3.1"
 
 intents:
   - greet
+  - register_complaint
   - provide_state
   - provide_area
   - provide_department
   - provide_complaint_details
-  - confirm
   - affirm
   - deny
+  - confirm
   - thank_you
   - goodbye
 
@@ -85,7 +86,14 @@ slots:
         intent: deny
         value: false
 
+  language:
+    type: text
+    mappings:
+      - type: custom
+
 
 actions:
   - action_generate_draft
   - action_submit_complaint
+  - action_detect_language
+  - action_translate_and_respond

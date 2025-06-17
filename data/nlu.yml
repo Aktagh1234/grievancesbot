@@ -6,12 +6,30 @@ nlu:
     - Hi
     - Hello
     - Hey
+    - Good morning
+    - नमस्ते (Hindi)
+    - नमस्कार (Marathi)
+    - வணக்கம் (Tamil)
+    - హలో (Telugu)
+    - ಹಲೋ (Kannada)
+    - ഹലോ (Malayalam)
+    - হ্যালো (Bengali)
+    - નમસ્તે (Gujarati)
+    - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Punjabi)
+    - ନମସ୍କାର (Odia)
 
 - intent: register_complaint
   examples: |
     - I want to register a complaint
     - I have a problem
     - Complaint registration
+    - मुझे शिकायत दर्ज करनी है (Hindi)
+    - मला तक्रार नोंदवायची आहे (Marathi)
+    - நான் புகார் பதிவு செய்ய விரும்புகிறேன் (Tamil)
+    - నేను ఫిర్యాదు నమోదు చేయాలనుకుంటున్నాను (Telugu)
+    - ನಾನು ದೂರು ನೋಂದಾಯಿಸಲು ಬಯಸುತ್ತೇನೆ (Kannada)
+    - ഞാൻ പരാതി രജിസ്റ്റർ ചെയ്യാൻ ആഗ്രഹിക്കുന്നു (Malayalam)
+    - আমি একটি অভিযোগ নিবন্ধন করতে চাই (Bengali)
 
 - intent: provide_state
   examples: |
@@ -51,6 +69,13 @@ nlu:
     - [Ladakh](state)
     - [Lakshadweep](state)
     - [Puducherry](state)
+    - मेरा राज्य [उत्तर प्रदेश](state) है (Hindi)
+    - माझे राज्य [महाराष्ट्र](state) आहे (Marathi)
+    - என் மாநிலம் [தமிழ்நாடு](state) (Tamil)
+    - నా రాష్ట్రం [తెలంగాణ](state) (Telugu)
+    - ನನ್ನ ರಾಜ್ಯ [ಕರ್ನಾಟಕ](state) (Kannada)
+    - എന്റെ സംസ്ഥാനം [കേരളം](state) (Malayalam)
+    - আমার রাজ্য [পশ্চিমবঙ্গ](state) (Bengali)
 
 - intent: provide_area
   examples: |
@@ -224,6 +249,13 @@ nlu:
     - [Srinagar](area)
     - [Jammu](area)
     - [Leh](area)
+    - मैं [दिल्ली](area) में रहता हूँ (Hindi)
+    - मी [पुणे](area) मध्ये राहतो (Marathi)
+    - நான் [கோயம்புத்தூர்](area) வாழ்கிறேன் (Tamil)
+    - నేను [హైదరాబాద్](area) లో నివసిస్తున్నాను (Telugu)
+    - ನಾನು [ಮೈಸೂರು](area) ನಲ್ಲಿ ವಾಸಿಸುತ್ತೇನೆ (Kannada)
+    - ഞാൻ [കൊച്ചി](area) യിൽ താമസിക്കുന്നു (Malayalam)
+    - আমি [কলকাতা](area) তে থাকি (Bengali)
 
 - intent: provide_department
   examples: |
@@ -267,6 +299,13 @@ nlu:
     - [Excise department](department)
     - [Fire safety department](department)
     - [Veterinary department](department)
+    - [पानी](department) की समस्या (Hindi)
+    - [वीज](department) ची समस्या (Marathi)
+    - [தண்ணீர்](department) பிரச்சினை (Tamil)
+    - [విద్యుత్](department) సమస్య (Telugu)
+    - [ನೀರು](department) ಸಮಸ್ಯೆ (Kannada)
+    - [വെള്ളം](department) പ്രശ്നം (Malayalam)
+    - [জল](department) সমস্যা (Bengali)
 
 
 - intent: provide_complaint_details
@@ -360,6 +399,13 @@ nlu:
     - My complaint was closed without resolution.
     - Officials are not responding to repeated complaints.
     - It's been 3 months and nothing has been fixed.
+    - पिछले 2 दिन से पानी नहीं आ रहा (Hindi)
+    - ३ दिवसांपासून पाणीपुरवठा बंद आहे (Marathi)
+    - 4 மணி நேரமாக மின்தடை (Tamil)
+    - ఈ రోజు ఉదయం నుండి విద్యుత్ లేదు (Telugu)
+    - ಕಳೆದ ೨ ದಿನಗಳಿಂದ ನೀರು ಸರಬರಾಜು ಇಲ್ಲ (Kannada)
+    - ഇന്നലെ മുതൽ വൈദ്യുതി കെട്ടിപ്പോയി (Malayalam)
+    - গতকাল থেকে বিদ্যুৎ নেই (Bengali)
 
 - intent: affirm
   examples: |
@@ -368,6 +414,13 @@ nlu:
     - sure
     - okay
     - go ahead
+    - हाँ (Hindi)
+    - होय (Marathi)
+    - ஆம் (Tamil)
+    - అవును (Telugu)
+    - ಹೌದು (Kannada)
+    - അതെ (Malayalam)
+    - হ্যাঁ (Bengali)
 
 - intent: deny
   examples: |
@@ -376,6 +429,13 @@ nlu:
     - cancel it
     - don't send
     - nevermind
+    - नहीं (Hindi)
+    - नाही (Marathi)
+    - இல்லை (Tamil)
+    - కాదు (Telugu)
+    - ಇಲ್ಲ (Kannada)
+    - അല്ല (Malayalam)
+    - না (Bengali)
 
 - intent: thank_you
   examples: |
@@ -384,6 +444,13 @@ nlu:
     - Appreciate it
     - Grateful for your help
     - Much obliged
+    - धन्यवाद (Hindi)
+    - आभार (Marathi)
+    - நன்றி (Tamil)
+    - ధన్యవాదాలు (Telugu)
+    - ಧನ್ಯವಾದಗಳು (Kannada)
+    - നന്ദി (Malayalam)
+    - ধন্যবাদ (Bengali)
     
 - intent: goodbye
   examples: |
@@ -392,3 +459,10 @@ nlu:
     - Take care
     - Bye
     - Catch you later
+    - अलविदा (Hindi)
+    - पुन्हा भेटू (Marathi)
+    - சென்று வருகிறேன் (Tamil)
+    - వెళ్లి వస్తాను (Telugu)
+    - ಹೋಗಿ ಬರ್ತೇನೆ (Kannada)
+    - പോയി വരാം (Malayalam)
+    - বিদায় (Bengali)

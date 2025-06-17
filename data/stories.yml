@@ -4,6 +4,8 @@ stories:
 - story: complaint_registration_flow
   steps:
     - intent: greet
+    - action: action_detect_language 
+    - action: action_translate_and_respond
     - action: utter_ask_state
     - intent: provide_state
       entities:
