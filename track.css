@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family:"Montserrat",sans-serif;
+  background-color: #FFF2E2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.container {
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.box {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 4px 4px 0 #000;
+  text-align: center;
+  font-family:"Montserrat",sans-serif;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 10px;
+  font-family:"Montserrat",sans-serif;
+}
+
+p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  font-family:"Montserrat",sans-serif;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  font-family:"Montserrat",sans-serif;
+}
+
+input[type="text"] {
+  padding: 10px 15px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 250px;
+  background: #fff;
+  box-shadow: 3px 3px 0 #000;
+  font-family:"Montserrat",sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #FF7E5F;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform 0.2s ease, background-color 0.3s;
+  font-family:"Montserrat",sans-serif;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #e7654a;
+  font-family:"Montserrat",sans-serif;
+}
+
+.progress-container {
+  background-color: #ddd;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  font-family:"Montserrat",sans-serif;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #40BFC1;
+  transition: width 0.3s ease-in-out;
+}
+
+.track-status {
+  margin-top: 20px;
+  background-color: #D3F9D8;
+  color: #333;
+  padding: 15px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 #000;
+  animation: fadeIn 0.5s ease-in-out;
+  font-weight: bold;
+  justify-content: center;
+  display: flex;
+  font-family:"Montserrat",sans-serif;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
