@@ -1,0 +1,394 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - Hi
+    - Hello
+    - Hey
+
+- intent: register_complaint
+  examples: |
+    - I want to register a complaint
+    - I have a problem
+    - Complaint registration
+
+- intent: provide_state
+  examples: |
+    - [Andhra Pradesh](state)
+    - [Arunachal Pradesh](state)
+    - [Assam](state)
+    - [Bihar](state)
+    - [Chhattisgarh](state)
+    - [Goa](state)
+    - [Gujarat](state)
+    - [Haryana](state)
+    - [Himachal Pradesh](state)
+    - [Jharkhand](state)
+    - [Karnataka](state)
+    - [Kerala](state)
+    - [Madhya Pradesh](state)
+    - [Maharashtra](state)
+    - [Manipur](state)
+    - [Meghalaya](state)
+    - [Mizoram](state)
+    - [Nagaland](state)
+    - [Odisha](state)
+    - [Punjab](state)
+    - [Rajasthan](state)
+    - [Sikkim](state)
+    - [Tamil Nadu](state)
+    - [Telangana](state)
+    - [Tripura](state)
+    - [Uttar Pradesh](state)
+    - [Uttarakhand](state)
+    - [West Bengal](state)
+    - [Andaman and Nicobar Islands](state)
+    - [Chandigarh](state)
+    - [Dadra and Nagar Haveli and Daman and Diu](state)
+    - [Delhi](state)
+    - [Jammu and Kashmir](state)
+    - [Ladakh](state)
+    - [Lakshadweep](state)
+    - [Puducherry](state)
+
+- intent: provide_area
+  examples: |
+    - [Visakhapatnam](area)
+    - [Vijayawada](area)
+    - [Guntur](area)
+    - [Nellore](area)
+    - [Tirupati](area)
+    - [Tawang](area)
+    - [Bhismaknagar](area)
+    - [Pasighat](area)
+    - [Ziro](area)
+    - [Bomdila](area)
+    - [Guwahati](area)
+    - [Tezpur](area)
+    - [Dibrugarh](area)
+    - [Silchar](area)
+    - [North Lakhimpur](area)
+    - [Patna](area)
+    - [Gaya](area)
+    - [Biharsharif](area)
+    - [Darbhanga](area)
+    - [Bhagalpur](area)
+    - [Raipur](area)
+    - [Bilaspur](area)
+    - [Korba](area)
+    - [Durg](area)
+    - [Bhilainagar](area)
+    - [Raigarh](area)
+    - [Rajnandgaon](area)
+    - [Panaji](area)
+    - [Vasco-da-Gama](area)
+    - [Ponda](area)
+    - [Margao](area)
+    - [Mapusa](area)
+    - [Goa Velha](area)
+    - [Ahmedabad](area)
+    - [Surat](area)
+    - [Rajkot](area)
+    - [Junagadh](area)
+    - [Vadodara](area)
+    - [Faridabad](area)
+    - [Gurugram](area)
+    - [Sonipat](area)
+    - [Panipat](area)
+    - [Ambala](area)
+    - [Shimla](area)
+    - [Dharamshala](area)
+    - [Mandi](area)
+    - [Solan](area)
+    - [Bilaspur](area)
+    - [Chamba](area)
+    - [Ranchi](area)
+    - [Jamshedpur](area)
+    - [Bokaro Steel City](area)
+    - [Deoghar](area)
+    - [Hazaribagh](area)
+    - [Dhanbad](area)
+    - [Bengaluru](area)
+    - [Mysore](area)
+    - [Davangere](area)
+    - [Mangalore](area)
+    - [Hubli](area)
+    - [Dharwad](area)
+    - [Belgaum](area)
+    - [Thiruvananthapuram](area)
+    - [Kochi](area)
+    - [Kozhikode](area)
+    - [Thrissur](area)
+    - [Malappuram](area)
+    - [Bhopal](area)
+    - [Indore](area)
+    - [Gwalior](area)
+    - [Jabalpur](area)
+    - [Ujjain](area)
+    - [Sagar](area)
+    - [Mumbai](area)
+    - [Pune](area)
+    - [Nagpur](area)
+    - [Nashik](area)
+    - [Aurangabad](area)
+    - [Solapur](area)
+    - [Imphal](area)
+    - [Bishnupur](area)
+    - [Ukhrul](area)
+    - [Tamenglong](area)
+    - [Chandel](area)
+    - [Senapati](area)
+    - [Shillong](area)
+    - [Cherrapunji](area)
+    - [Tura](area)
+    - [Jowai](area)
+    - [Baghmara](area)
+    - [Nongpoh](area)
+    - [Aizawl](area)
+    - [Lunglei](area)
+    - [Serchhip](area)
+    - [Champhai](area)
+    - [Tuipang](area)
+    - [Mamit](area)
+    - [Kohima](area)
+    - [Tuensang](area)
+    - [Zunheboto](area)
+    - [Mokokchung](area)
+    - [Kiphire](area)
+    - [Phek](area)
+    - [Bhubaneswar](area)
+    - [Rourkela](area)
+    - [Cuttack](area)
+    - [Brahmapur](area)
+    - [Puri](area)
+    - [Sambalpur](area)
+    - [Amritsar](area)
+    - [Jalandhar](area)
+    - [Ludhiana](area)
+    - [Patiala](area)
+    - [Kapurthala](area)
+    - [Jaipur](area)
+    - [Bikaner](area)
+    - [Jaisalmer](area)
+    - [Jodhpur](area)
+    - [Udaipur](area)
+    - [Ajmer](area)
+    - [Gangtok](area)
+    - [Namchi](area)
+    - [Gyalshing](area)
+    - [Mangan](area)
+    - [Rabdentse](area)
+    - [Chennai](area)
+    - [Tiruchirappalli](area)
+    - [Madurai](area)
+    - [Erode](area)
+    - [Vellore](area)
+    - [Coimbatore](area)
+    - [Hyderabad](area)
+    - [Warangal](area)
+    - [Nizamabad](area)
+    - [Karimnagar](area)
+    - [Adilabad](area)
+    - [Khammam](area)
+    - [Agartala](area)
+    - [Amarpur](area)
+    - [Kumarghat](area)
+    - [Udaipur](area)
+    - [Gakulnagar](area)
+    - [Kunjaban](area)
+    - [Lucknow](area)
+    - [Noida](area)
+    - [Varanasi](area)
+    - [Allahabad](area)
+    - [Agra](area)
+    - [Kanpur](area)
+    - [Dehradun](area)
+    - [Haridwar](area)
+    - [Roorkee](area)
+    - [Rishikesh](area)
+    - [Kashipur](area)
+    - [Haldwani](area)
+    - [Kolkata](area)
+    - [Darjeeling](area)
+    - [Siliguri](area)
+    - [Asansol](area)
+    - [Howrah](area)
+    - [Durgapur](area)
+    - [Port Blair](area)
+    - [Chandigarh](area)
+    - [Daman](area)
+    - [Kavaratti](area)
+    - [New Delhi](area)
+    - [Puducherry](area)
+    - [Srinagar](area)
+    - [Jammu](area)
+    - [Leh](area)
+
+- intent: provide_department
+  examples: |
+    - [Water supply department](department)
+    - [Electricity board](department)
+    - [Road and transport department](department)
+    - [Municipal corporation](department)
+    - [Police department](department)
+    - [Cyber crime cell](department)
+    - [Women and child welfare department](department)
+    - [Health department](department)
+    - [Sanitation department](department)
+    - [Public Works Department](department)
+    - [Urban development authority](department)
+    - [Panchayat office](department)
+    - [Labour department](department)
+    - [Revenue department](department)
+    - [Consumer grievance cell](department)
+    - [Pollution control board](department)
+    - [Food and civil supplies department](department)
+    - [Forest department](department)
+    - [Education department](department)
+    - [Social welfare department](department)
+    - [Transport authority](department)
+    - [Telecom regulatory authority](department)
+    - [Housing board](department)
+    - [Income tax department](department)
+    - [Employment exchange](department)
+    - [Anganwadi center](department)
+    - [Disability welfare office](department)
+    - [Senior citizens welfare board](department)
+    - [Disaster management authority](department)
+    - [Public grievance redressal cell](department)
+    - [Ration office](department)
+    - [Passport office](department)
+    - [Aadhaar enrollment center](department)
+    - [Election commission office](department)
+    - [Registrar office](department)
+    - [Land records office](department)
+    - [Town planning department](department)
+    - [Excise department](department)
+    - [Fire safety department](department)
+    - [Veterinary department](department)
+
+
+- intent: provide_complaint_details
+  examples: |
+    - Water supply in our area is not regular.
+    - There’s a power cut every evening in our locality.
+    - The road near my house is damaged with many potholes.
+    - Garbage has not been collected by the municipal corporation.
+    - I want to report a problem to the police.
+    - I need to report a scam online.
+    - No action is being taken on abuse cases by the women and child welfare office.
+    - Dengue cases are rising but the health department hasn't responded.
+    - Sanitation workers haven’t come for several days.
+    - Public works department is not repairing damaged infrastructure.
+    - Housing development work has been stopped by the urban authority.
+    - The panchayat is not taking action on our complaints.
+    - Our wages issue hasn’t been resolved by the labour department.
+    - Land record updates are delayed by the revenue office.
+    - No help from consumer cell regarding a faulty product.
+    - Factory pollution is increasing, but no action by the pollution board.
+    - Ration is not being delivered by the food supply department.
+    - Trees are being cut illegally, and forest officers are ignoring it.
+    - There is a shortage of teachers in our government school.
+    - Pension payments are delayed by the social welfare office.
+    - Buses are not frequent; transport authority must act.
+    - I have network issues and need help from telecom authority.
+    - Flats are still not handed over by the housing board.
+    - I received a wrong notice from the income tax office.
+    - My profile is not updated on the employment portal.
+    - I need child support from the local anganwadi center.
+    - Disability certificate has been wrongly rejected.
+    - Senior citizen scheme is not being processed.
+    - No help was provided during the flood by disaster response team.
+    - Grievances are not being resolved by the redressal cell.
+    - Ration office in our area is not functioning properly.
+    - Passport verification is getting delayed.
+    - Aadhaar center remains closed most of the time.
+    - My voter card has errors made by the election office.
+    - Birth certificate is getting delayed at the registrar's office.
+    - Ownership details are wrong in land records.
+    - Illegal construction was approved in our locality.
+    - Local liquor shops are not being monitored properly.
+    - New mall was opened without fire safety clearance.
+    - Stray animal issues are being ignored by veterinary officials.
+    - There is no water supply in my area since last week.
+    - Electricity goes out every evening without notice.
+    - The street near my house has huge potholes causing accidents.
+    - Garbage collection has stopped in my locality.
+    - I need to file a complaint about a local theft.
+    - I was scammed online and want to report it.
+    - Women in our area are facing domestic abuse and no help is given.
+    - Dengue cases are rising but no fumigation is being done.
+    - Drains are overflowing and no sanitation worker has come.
+    - Public roads are broken and the PWD hasn’t repaired them.
+    - My housing allotment is pending for years.
+    - Panchayat is ignoring our land dispute issue.
+    - Labourers are being exploited and no action is taken.
+    - Land ownership data is wrong in government records.
+    - I want to file a consumer complaint for a defective fridge.
+    - Pollution levels are high due to nearby factories.
+    - The ration shop has not given supplies for two months.
+    - Illegal tree cutting is happening near our area.
+    - School staff is always absent in our local school.
+    - My pension is not being credited regularly.
+    - Bus service in our village is irregular and unreliable.
+    - Internet services are poor and calls drop frequently.
+    - Our housing society is still not handed over officially.
+    - I received a tax notice by mistake.
+    - I cannot update my job profile on the employment portal.
+    - My child is not getting proper nutrition from anganwadi.
+    - I was denied disability benefits without reason.
+    - No one is helping senior citizens apply for benefits.
+    - No emergency support came during the flood.
+    - I registered a complaint, but nothing happened afterwards.
+    - Ration shop is closed most of the time.
+    - My passport application is delayed beyond the deadline.
+    - Aadhaar center is not functioning properly.
+    - Voter card has the wrong address and name.
+    - Birth registration is pending for months.
+    - My land record shows someone else’s name.
+    - Construction is going on illegally in a residential zone.
+    - Liquor shops are open beyond the permitted time.
+    - Fire safety measures are missing in the new building.
+    - Stray dogs are biting people and no action is taken.
+    - There is sewage water leaking near my house.
+    - Street lights are not working in our lane.
+    - We have to walk in darkness every night due to lack of lighting.
+    - Loudspeakers are being used late at night disturbing sleep.
+    - Vehicles are parked illegally, blocking the road.
+    - There are no dustbins and garbage is thrown everywhere.
+    - My complaint was closed without resolution.
+    - Officials are not responding to repeated complaints.
+    - It's been 3 months and nothing has been fixed.
+
+- intent: affirm
+  examples: |
+    - yes
+    - of course
+    - sure
+    - okay
+    - go ahead
+
+- intent: deny
+  examples: |
+    - no
+    - not really
+    - cancel it
+    - don't send
+    - nevermind
+
+- intent: thank_you
+  examples: |
+    - Thank you
+    - Thanks
+    - Appreciate it
+    - Grateful for your help
+    - Much obliged
+    
+- intent: goodbye
+  examples: |
+    - Goodbye
+    - See you later
+    - Take care
+    - Bye
+    - Catch you later

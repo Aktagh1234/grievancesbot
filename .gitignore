@@ -1,0 +1,23 @@
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment
+venv/
+
+# Ignore Rasa data and temporary files
+.rasa/
+*.db
+events.csv
+
+# Ignore model artifacts
+models/
+
+# Ignore logs
+*.log
+
+# Ignore environment/config files
+.env
+
+# Ignore VS Code settings
+.vscode/

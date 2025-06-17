@@ -1,0 +1,38 @@
+version: "3.1"
+
+stories:
+- story: complaint_registration_flow
+  steps:
+    - intent: greet
+    - action: utter_ask_state
+    - intent: provide_state
+      entities:
+        - state
+    - slot_was_set:
+        - state
+    - action: utter_ask_area
+    - intent: provide_area
+      entities:
+        - area
+    - slot_was_set:
+        - area
+    - action: utter_ask_department
+    - intent: provide_department
+      entities:
+        - department
+    - slot_was_set:
+        - department
+    - action: utter_ask_complaint_details
+    - intent: provide_complaint_details
+      entities:
+        - complaint_details
+    - slot_was_set:
+        - complaint_details
+    - action: action_generate_draft
+    - action: utter_ask_confirmation
+    - intent: confirm
+    - action: action_submit_complaint
+    - intent: thank_you
+    - action: utter_thank_you
+    - intent: goodbye
+    - action: utter_goodbye

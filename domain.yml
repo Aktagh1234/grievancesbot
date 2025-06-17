@@ -1,0 +1,91 @@
+version: "3.1"
+
+intents:
+  - greet
+  - provide_state
+  - provide_area
+  - provide_department
+  - provide_complaint_details
+  - confirm
+  - affirm
+  - deny
+  - thank_you
+  - goodbye
+
+responses:
+  utter_ask_state:
+    - text: "Hi I am Upay, a central India grievence chatbot. Please enter your state:"
+  utter_ask_area:
+    - text: "Which area/city in {state} are you facing the issue?"
+  utter_ask_department:
+    - text: "Select department of relevence(Eg. Water/Electricity/Land/Road and Transport/Woman and Child Welfare):"
+  utter_ask_complaint_details:
+    - text: "Describe your complaint in detail(area in which you are facing the problem, duration of the problem, anything relevant)"
+  utter_ask_confirmation:
+    - text: "Would you like me to send this email to the respective department?"
+  utter_thank_you:
+    - text: "Thank you! Your complaint has been registered."
+  utter_goodbye:
+    - text: "Goodbye! Feel free to reach out again if you need help."
+
+entities:
+  - state
+  - area
+  - department
+  - complaint_details
+
+
+forms:
+  complaint_form:
+    required_slots:
+      - state
+      - area
+      - department
+      - complaint_details
+
+
+slots:
+  state:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: state
+
+  area:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: area
+
+  department:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: department
+
+  complaint_details:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: complaint_details
+      - type: from_text
+
+  confirmation:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: from_intent
+        intent: affirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
+
+
+actions:
+  - action_generate_draft
+  - action_submit_complaint

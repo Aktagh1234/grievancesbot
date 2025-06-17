@@ -1,0 +1,28 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Activate complaint form
+  steps:
+    - intent: greet
+    - action: complaint_form
+    - active_loop: complaint_form
+
+- rule: Submit complaint form
+  condition:
+    - active_loop: complaint_form
+  steps:
+    - action: complaint_form
+    - active_loop: null
+    - action: action_generate_draft
+    - action: utter_ask_confirmation
+
+- rule: Send email after user confirms
+  steps:
+    - intent: confirm
+    - action: action_submit_complaint
