@@ -1,61 +1,39 @@
 version: "3.1"
 
 rules:
+- rule: Initial Language Detection
+  steps:
+    - intent: greet
+    - action: action_detect_language
+    - action: utter_greet
+    - action: utter_ask_state
 
-- rule: Detect language first
+- rule: Handle State Input
   steps:
-  - intent: greet
-  - action: action_detect_language
-  - action: action_translate_and_respond
-  - action: utter_ask_state
+    - intent: provide_state
+    - slot_was_set:
+      - state
+    - action: utter_ask_area
 
-- rule: Register complaint flow
+- rule: Handle Area Input
   steps:
-  - intent: provide_state
-    entities:
-    - state
-  - slot_was_set:
-    - state
-  - action: utter_ask_area
+    - intent: provide_area
+    - slot_was_set:
+      - area
+    - action: action_ask_department
 
-- rule: Ask for area
+- rule: Handle Department Input
   steps:
-  - intent: provide_area
-    entities:
-    - area
-  - slot_was_set:
-    - area
-  - action: utter_ask_department
+    - intent: provide_department
+    - slot_was_set:
+      - department
+    - action: utter_ask_complaint_details
 
-- rule: Ask for department
+- rule: Generate Draft After Form Completion
+  condition:
+    - active_loop: null
+    - slot_was_set:
+      - complaint_details
   steps:
-  - intent: provide_department
-    entities:
-    - department
-  - slot_was_set:
-    - department
-  - action: utter_ask_complaint_details
-- rule: Ask for complaint details
-  steps:
-  - intent: provide_complaint_details
-    entities:
-    - complaint_details
-  - slot_was_set:
-    - complaint_details
-  - action: action_generate_draft
-  - action: utter_ask_confirmation
-
-- rule: Confirm complaint submission
-  steps:
-  - intent: confirm
-  - action: action_submit_complaint
-
-- rule: Thank user after complaint submission
-  steps:
-  - intent: thank_you
-  - action: utter_thank_you
-
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+    - action: action_generate_draft
+    - action: utter_ask_confirmation

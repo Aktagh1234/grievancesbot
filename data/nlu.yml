@@ -90,7 +90,6 @@ nlu:
     - [Ziro](area)
     - [Bomdila](area)
     - [Guwahati](area)
-    - [Tezpur](area)
     - [Dibrugarh](area)
     - [Silchar](area)
     - [North Lakhimpur](area)
@@ -245,7 +244,6 @@ nlu:
     - [Daman](area)
     - [Kavaratti](area)
     - [New Delhi](area)
-    - [Puducherry](area)
     - [Srinagar](area)
     - [Jammu](area)
     - [Leh](area)
@@ -310,6 +308,7 @@ nlu:
 
 - intent: provide_complaint_details
   examples: |
+    - The street light has not been working for 3 days.
     - Water supply in our area is not regular.
     - There’s a power cut every evening in our locality.
     - The road near my house is damaged with many potholes.
@@ -407,35 +406,12 @@ nlu:
     - ഇന്നലെ മുതൽ വൈദ്യുതി കെട്ടിപ്പോയി (Malayalam)
     - গতকাল থেকে বিদ্যুৎ নেই (Bengali)
 
-- intent: affirm
+- intent: confirm
   examples: |
     - yes
-    - of course
-    - sure
-    - okay
+    - that's correct
+    - confirm
     - go ahead
-    - हाँ (Hindi)
-    - होय (Marathi)
-    - ஆம் (Tamil)
-    - అవును (Telugu)
-    - ಹೌದು (Kannada)
-    - അതെ (Malayalam)
-    - হ্যাঁ (Bengali)
-
-- intent: deny
-  examples: |
-    - no
-    - not really
-    - cancel it
-    - don't send
-    - nevermind
-    - नहीं (Hindi)
-    - नाही (Marathi)
-    - இல்லை (Tamil)
-    - కాదు (Telugu)
-    - ಇಲ್ಲ (Kannada)
-    - അല്ല (Malayalam)
-    - না (Bengali)
 
 - intent: thank_you
   examples: |
