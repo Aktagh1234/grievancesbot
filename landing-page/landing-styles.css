@@ -178,3 +178,36 @@ nav {
   transform: scale(1.01);
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
+
+.coli h5{
+  font-family : "League Spartan", sans-serif;
+}
+
+.nav-item{
+  font-family : "League Spartan", sans-serif;
+}
+
+
+.footer {
+  background-color: #fff6e9;
+  font-family: "League Spartan", sans-serif;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+
+.footer .container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.footer .text-body-primary {
+  font-family: "League Spartan", sans-serif;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.footer .coli h5 {
+  font-family: "League Spartan", sans-serif;
+}
+
