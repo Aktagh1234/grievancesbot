@@ -2,8 +2,10 @@ body,
 html {
   margin: 0;
   padding: 0;
+  padding-top: 70px;
   background: linear-gradient(to right, #e0f7fa, #f3e5f5);
   font-family: sans-serif;
+  scroll-behavior: smooth;
 }
 
 .logo {
@@ -11,8 +13,30 @@ html {
   height: auto;
 }
 
+.name {
+  font-family: "League Spartan", sans-serif;
+  font-weight: bold;
+  color: #00478A;
+  font-size: 1.25rem;
+  margin: 0; 
+  padding-top: 4px; 
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
 nav {
-  background-color: #fff6e9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff6e9; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .btn-orange-shadow {
@@ -83,4 +107,74 @@ nav {
 .my-collage{
     height:auto;
     width:100%;
+}
+
+
+.my-flowchart{
+  height: 550px;
+  margin-left: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-flowchart:hover {
+  transform: scale(1.01);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+}
+
+.flowchart {
+  display: flex;
+  justify-content: left;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.flowchart p {
+  margin-top: 180px;
+  font-family: "League Spartan", sans-serif;
+  font-weight: bold;
+  background: linear-gradient(to right, #fdf1f1, #f3e8ff);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+.flowchart p:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  width: 100%;
+  max-width: 240px;
+  line-height: 1.1;
+}
+
+.pb-2{
+  font-family: "League Spartan", sans-serif;
+}
+
+
+.pt-5{
+  font-family: "League Spartan", sans-serif;
+}
+
+.m-0{
+  font-family: "League Spartan", sans-serif;
+}
+
+.col{
+  transition: transform 0.3s ease;
+}
+
+.col:hover{
+  transform: scale(1.01);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
