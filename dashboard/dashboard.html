@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ResolveIndiaAI Dashboard</title>
   <link rel="stylesheet" href="dashboard.css" />
-  <link rel="icon" type="image/png" href="mainlogo.png">
+  <link rel="icon" type="image/png" href="../dashboard/mainlogo.png">
 
 </head>
 <body>
@@ -19,8 +19,9 @@
 <nav>
   <ul>
     <li><a href="dashboard.html">Home</a></li>
-    <li><a href="register.html">Register Complaint</a></li>
-    <li><a href="track.html">Track Complaint</a></li>
+<li><a href="../upaay-frontend/upaay.html">Register Complaint</a></li>
+
+    <li><a href="../track-page/track.html">Track Complaint</a></li>
     <!-- <li><a href="process.html">Know The Process</a></li> -->
     
   </ul>
@@ -35,7 +36,7 @@
         <input type="text" placeholder="Search or type" />
         <div class="logos">
           <img src="Emblem_of_India-removebg-preview.png" alt="Logo1" />
-          <img src="Azadi-Ka-Amrit-Mahotsav-Logo-removebg-preview.png" alt="Logo2" />
+          <img src="azadi.png" alt="Logo2" />
         </div>
       </header>
 
@@ -47,9 +48,10 @@
       </section>
 
       <section class="action-buttons">
-        <button class="new">Register A Complaint With AI</button>
+         <button class="new" onclick="location.href='../upaay-frontend/upaay.html'">Register A Complaint With AI</button>
+
         <!-- <button>Track Your Complaint</button> -->
-        <button onclick="location.href='track.html'">Track Your Complaint</button>
+        <button onclick="location.href='../track-page/track.html'">Track Your Complaint</button>
 
         <button>View Complaint History</button>
       </section>
