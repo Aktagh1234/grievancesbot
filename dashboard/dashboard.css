@@ -20,6 +20,16 @@ body {
   height: 40px;
   border-radius: 50%;
 }
+.brand-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.brand:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
 
 
 .sidebar {
@@ -269,4 +279,14 @@ tbody tr:hover {
 
 .view-btn:hover {
   background-color: #1D3557;
+}
+.logout {
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.logout:hover {
+  background-color: #F4A261;
+  transform: scale(1.05);
 }

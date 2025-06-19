@@ -11,14 +11,17 @@
 <body>
   <div class="container">
     <aside class="sidebar">
-      <div class="brand">
-        <img src="mainlogo.png" alt="ResolveIndiaAI Logo" class="brand-logo" />
-        <h2>ResolveIndiaAI</h2>
-      </div>
-      <nav>
+      
+
+      <nav><a href="../landing-page/landing-index.html" class="brand-link">
+  <div class="brand">
+    <img src="mainlogo.png" alt="ResolveIndiaAI Logo" class="brand-logo" />
+    <h2>ResolveIndiaAI</h2>
+  </div>
+</a>
 <nav>
   <ul>
-    <li><a href="dashboard.html">Home</a></li>
+    <li><a href="../landing-page/landing-index.html">Home</a></li>
 <li><a href="../upaay-frontend/upaay.html">Register Complaint</a></li>
 
     <li><a href="../track-page/track.html">Track Complaint</a></li>
@@ -28,7 +31,8 @@
 </nav>
 
       </nav>
-      <div class="logout">Log out</div>
+      <div class="logout" onclick="logoutUser()">Log out</div>
+
     </aside>
 
     <main class="main-content">
@@ -49,6 +53,9 @@
 
       <section class="action-buttons">
          <button class="new" onclick="location.href='../upaay-frontend/upaay.html'">Register A Complaint With AI</button>
+
+
+
 
         <!-- <button>Track Your Complaint</button> -->
         <button onclick="location.href='../track-page/track.html'">Track Your Complaint</button>
@@ -105,3 +112,16 @@
   </div>
 </body>
 </html>
+<script>
+  function logoutUser() {
+    // Clear user-related data (if any)
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Optional alert
+    alert("You have been logged out!");
+
+    // Redirect to landing page
+    window.location.href = "../landing-page/landing-index.html";
+  }
+</script>
