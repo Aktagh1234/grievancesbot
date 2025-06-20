@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
+import os
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -61,6 +62,10 @@ def login():
         return jsonify({'message': 'Login successful'}), 200
     return jsonify({'error': 'Invalid credentials'}), 401
 
+@app.route('/home')
+def serve_home():
+    path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../home-page/frontend'))
+    return send_from_directory(path, 'home-index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

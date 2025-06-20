@@ -32,7 +32,12 @@ loginTab.addEventListener("click", () => {
       });
 
       const data = await response.json();
-      alert(data.message || data.error);
+      if (response.ok) {
+           window.location.href = "../../home-page/frontend/home-index.html";  // ✅ redirect on success
+      } else {
+  alert(data.error || "Login failed.");
+}
+
     } catch (error) {
       alert("Something went wrong. Please try again.");
     }
@@ -78,7 +83,12 @@ signupTab.addEventListener("click", () => {
       });
 
       const data = await response.json();
-      alert(data.message || data.error);
+      if (response.ok) {
+        window.location.href = "../../home-page/frontend/home-index.html";  // ✅ redirect on success
+      } else {
+      alert(data.error || "Signup failed.");
+}
+
     } catch (error) {
       alert("Something went wrong. Please try again.");
     }
