@@ -1,11 +1,22 @@
 from flask import Flask, request, jsonify, send_from_directory
-from flask_cors import CORS
+from flask_cors import CORS 
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 import os
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+
+# Enhanced CORS configuration
+CORS(app, 
+     resources={
+         r"/*": {
+             "origins": ["http://localhost:8000", "http://localhost:5005"],
+             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+             "allow_headers": ["Content-Type", "Authorization"],
+             "supports_credentials": True
+         }
+     })
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

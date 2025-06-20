@@ -16,11 +16,11 @@
           <div class="icon">
             <img src="icon.svg" alt="Icon" />
           </div>
-          File Complaints Easily — We’ll Handle the Rest!
+          File Complaints Easily — We'll Handle the Rest!
         </h2>
         <h4>
           Our chatbot makes filing complaints simple. Just type your issue,
-          choose the department, and we’ll send it to the right place. You’ll
+          choose the department, and we'll send it to the right place. You'll
           get a complaint ID and a timeline — no forms, no waiting, just quick
           action.
         </h4>
@@ -29,12 +29,12 @@
     </div>
 
     <div class="action-cards">
-      <button class="card new-chat">
+      <button class="card new-chat" id="start-new-chat">
         <div class="card-header">—</div>
         <h2>
           New <br /> Chat
         </h2>
-        <p>📄 <span>Start a fresh complaint. We’ll guide you step by step.</span></p>
+        <p>📄 <span>Start a fresh complaint. We'll guide you step by step.</span></p>
       </button>
 
       <button class="card track">
@@ -54,5 +54,11 @@
       </button>
     </div>
   </div>
+
+  <script>
+    document.getElementById('start-new-chat').addEventListener('click', function() {
+      window.location.href = '../../chatbot/upaay-frontend/upaay.html';
+    });
+  </script>
 </body>
 </html>
