@@ -1,0 +1,109 @@
+body,
+html {
+  background-color: #fff6e9;
+  height: 100vh;
+  font-family: "Montserrat", sans-serif;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  font-family: "League Spartan", sans-serif;
+}
+
+h4 {
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  margin-left: 50px;
+  max-width: 700px;
+  color: black;
+  font-weight: 100;
+}
+
+.icon img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 40px;
+  padding: 0px 20px;
+  margin-top: 30px;
+}
+
+.intro-box {
+  margin-top: 10px;
+  padding: 20px 30px;
+  display: grid;
+  box-sizing: border-box;
+  align-items: center;
+  border: 2px solid;
+  border-radius: 30px;
+  box-shadow: 3px 4px 0 0;
+  width: 500px;
+  max-width: 900px;
+  margin-left: 0px;
+}
+
+.flowchart-img {
+  width: 350px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+.action-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px auto;
+  flex-wrap: wrap;
+}
+
+.card-header {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.card {
+  all: unset;
+  cursor: pointer;
+  width: 200px;
+  height: 280px;
+  border-radius: 12px;
+  border: 2px solid black;
+  box-shadow: 4px 4px 0px black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card.new-chat {
+  background-color: #f26c2f;
+  color: #fff6e9;
+}
+
+.card.manage {
+  background-color: #84ccf4;
+  color: #fff;
+}
+
+.card h2 {
+  font-size: 35px;
+}
