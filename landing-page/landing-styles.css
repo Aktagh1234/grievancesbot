@@ -170,8 +170,18 @@ nav {
   font-family: "League Spartan", sans-serif;
 }
 
-.col{
-  transition: transform 0.3s ease;
+.coli {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #ffffffd2;
+  padding: 20px 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  gap: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 300px;
 }
 
 .col:hover{
@@ -209,5 +219,123 @@ nav {
 
 .footer .coli h5 {
   font-family: "League Spartan", sans-serif;
+}
+
+=======
+.coli:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.coli h5 {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.2rem;
+  color: #00478A;
+  margin: 0;
+  min-width: 150px;
+}
+
+.navi {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: -10px; /* move logo slightly up */
+}
+
+.nav-item a {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #4ba087;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-item a:hover {
+  color: #2e6e5a;
+  text-decoration: underline;
+}
+.justify-content-end {
+  gap: 20px !important;
+}
+.team-section {
+  background-color: #ffffffd2;
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  margin: 40px 60px;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.team-label h4 {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.5rem;
+  color: #00478A;
+  margin-top: 10px;
+  min-width: 120px;
+}
+
+.contributors {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.contributor-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  gap: 30px;
+  min-width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contributor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.contributor-card h5 {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.2rem;
+  color: #00478A;
+  margin: 0;
+}
+
+.navi {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item a {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #4ba087;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-item a:hover {
+  color: #2e6e5a;
+  text-decoration: underline;
 }
 

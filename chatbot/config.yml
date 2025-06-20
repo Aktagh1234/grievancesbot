@@ -12,6 +12,9 @@ pipeline:
 - name: DIETClassifier
   epochs: 100
   constrain_similarities: true
+  hidden_layers_sizes:
+    text: [256, 128]
+  embedding_dimension: 50
 - name: EntitySynonymMapper
 - name: FallbackClassifier
   threshold: 0.3
@@ -19,9 +22,22 @@ pipeline:
 
 policies:
 - name: MemoizationPolicy
+  max_history: 5
 - name: RulePolicy
+  core_fallback_threshold: 0.3
+  enable_fallback_prediction: true
+  restrict_rules: true
 - name: TEDPolicy
   max_history: 5
   epochs: 100
   constrain_similarities: true
-assistant_id: 20250617-175010-tomato-timpani
+  hidden_layers_sizes:
+    text: [256, 128]
+assistant_id: 20250618-195206-stable-caviar
+
+forms:
+  complaint_form:
+    ignored_intents:
+      - greet
+      - goodbye
+
