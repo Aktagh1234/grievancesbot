@@ -37,7 +37,6 @@ rules:
       - complaint_details
   steps:
     - action: action_generate_draft
-    - action: utter_ask_confirmation
 
 - rule: Submit complaint after confirmation
   steps:
