@@ -31,7 +31,9 @@
       <div class="d-flex align-items-center gap-3">
         <a href="#" class="btn btn-link text-dark text-decoration-none">HOME</a>
         <a href="#about-section" class="btn btn-link text-dark text-decoration-none">ABOUT</a>
-        <button class="btn-orange-shadow">Login/Register</button>
+        <a href="../login-page/frontend/login-index.html" class="btn btn-link text-dark text-decoration-none">
+          <button class="btn-orange-shadow">Login/Register</button>
+        </a>
       </div>
     </nav>
 
@@ -40,7 +42,7 @@
       <div class="text-overlay">
         <h1>Resolve Issues Effortlessly <br /> with ResolveIndiaAI</h1>
         <h4>Your personal AI assistant for handling feedback, complaints & support</h4>
-        <button class="convo">Start a Conversation</button>
+        <button class="convo" id="start-convo">Start a Conversation</button>
       </div>
     </div>
 
@@ -146,6 +148,11 @@
   </div>
 
   <script src="landing-script.js"></script>
+  <script>
+    document.getElementById('start-convo').addEventListener('click', function() {
+      window.location.href = '../login-page/frontend/login-index.html';
+    });
+  </script>
 
 
   </body>
