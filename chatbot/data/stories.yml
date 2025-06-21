@@ -4,6 +4,7 @@ stories:
 - story: complaint_happy_path
   steps:
     - intent: greet
+    - action: action_set_email_slot
     - action: action_detect_language
     - action: utter_greet
     - action: utter_ask_state
@@ -38,6 +39,7 @@ stories:
 - story: form_completion_path
   steps:
     - intent: provide_complaint_details
+    - action: action_set_email_slot
     - action: complaint_form
     - active_loop: null
     - action: action_generate_draft

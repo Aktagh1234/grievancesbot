@@ -177,7 +177,8 @@ body {
 .buttons-container {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
+    justify-content: flex-end;
 }
 
 .confirm-button, .cancel-button {
@@ -186,6 +187,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.2s;
 }
 
 .confirm-button {
@@ -193,9 +196,17 @@ body {
     color: white;
 }
 
+.confirm-button:hover {
+    background-color: #219a52;
+}
+
 .cancel-button {
     background-color: var(--error-color);
     color: white;
+}
+
+.cancel-button:hover {
+    background-color: #c0392b;
 }
 
 @keyframes fadeIn {

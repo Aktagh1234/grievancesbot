@@ -4,6 +4,7 @@ rules:
 - rule: Initial Language Detection
   steps:
     - intent: greet
+    - action: action_set_email_slot
     - action: action_detect_language
     - action: utter_greet
     - action: utter_ask_state
@@ -37,3 +38,9 @@ rules:
   steps:
     - action: action_generate_draft
     - action: utter_ask_confirmation
+
+- rule: Submit complaint after confirmation
+  steps:
+    - intent: confirm
+    - action: action_submit_complaint
+    - action: utter_thank_you

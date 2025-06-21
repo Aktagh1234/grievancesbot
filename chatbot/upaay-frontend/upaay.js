@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Chatbot page loaded");
+    
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
@@ -6,15 +8,56 @@ document.addEventListener('DOMContentLoaded', function() {
     const connectionStatus = document.getElementById('connection-status');
     const statusIcon = connectionStatus.querySelector('i');
     
+    // Ensure input is always enabled
+    userInput.disabled = false;
+    sendButton.disabled = false;
+    
+    console.log("Input elements enabled");
+    
     // Use consistent origin (localhost instead of 127.0.0.1)
     const rasaServerUrl = 'http://localhost:5005/webhooks/rest/webhook';
-    let senderId = 'user_' + Math.random().toString(36).substr(2, 9);
+    let userEmail = localStorage.getItem("userEmail");
+    let senderId = userEmail || 'default_user';
+    
+    console.log("User email:", userEmail);
+    console.log("Sender ID:", senderId);
     
     // Initialize connection status
     updateConnectionStatus('connecting');
     
     // Check initial connection
     checkConnection();
+    
+    // Set the email slot in Rasa when the chat starts (no prompt) - in background
+    async function setEmailSlot() {
+        if (userEmail) {
+            try {
+                console.log("Setting email slot for:", userEmail);
+                const response = await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        event: "slot",
+                        name: "email",
+                        value: userEmail
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log("Email slot set successfully");
+                } else {
+                    console.error("Failed to set email slot, status:", response.status);
+                }
+            } catch (error) {
+                console.error("Failed to set email slot:", error);
+            }
+        } else {
+            console.log("No user email found in localStorage");
+        }
+    }
+
+    // Set slot in background without blocking UI
+    setEmailSlot();
     
     // Event listeners
     sendButton.addEventListener('click', sendMessage);
@@ -27,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const message = userInput.value.trim();
         if (message === '') return;
         
+        console.log("Sending message:", message);
         addUserMessage(message);
         userInput.value = '';
         sendToRasa(message);
@@ -46,10 +90,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isComplaint) {
             messageDiv.innerHTML = `
-                <div class="message-content">${text}</div>
-                <div class="buttons-container">
-                    <button class="confirm-button">Confirm</button>
-                    <button class="cancel-button">Cancel</button>
+                <div class="message-content">
+                    ${text}
+                    <div class="buttons-container">
+                        <button class="confirm-button">Confirm</button>
+                        <button class="cancel-button">Cancel</button>
+                    </div>
                 </div>
             `;
             
@@ -78,11 +124,11 @@ document.addEventListener('DOMContentLoaded', function() {
         updateConnectionStatus('connecting');
         
         try {
+            console.log("Sending to Rasa:", message);
             const response = await fetch(rasaServerUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     sender: senderId,
@@ -98,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
+            console.log("Rasa response:", data);
             updateConnectionStatus('connected');
             processRasaResponse(data);
         } catch (error) {
@@ -114,34 +161,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 const isComplaint = response.text.length > 100 || 
                                    response.text.includes("Here is your draft email") || 
                                    response.text.includes("Complaint registered");
-                addBotMessage(response.text, isComplaint);
+                
+                if (isComplaint && response.text.includes("Here is your draft email")) {
+                    // First add the email draft without buttons
+                    addBotMessage(response.text, false);
+                    // Then add a separate message with confirm/cancel buttons
+                    addBotMessage("Please confirm or cancel this complaint:", true);
+                } else {
+                    addBotMessage(response.text, isComplaint);
+                }
             }
         });
     }
 
     async function checkConnection() {
         try {
-            // Test with a simple GET request to a Rasa endpoint that exists
-            const response = await fetch('http://localhost:5005/', {  // Changed endpoint
-                method: 'GET',
+            const response = await fetch(rasaServerUrl, {
+                method: 'OPTIONS',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Origin': 'http://localhost:8000',
+                    'Access-Control-Request-Method': 'POST'
                 }
             });
-            
-            if (response.ok) {
-                updateConnectionStatus('connected');
-                setTimeout(() => {
-                    addBotMessage("Hi I am Upay, a central India grievance chatbot. Please enter your state:");
-                }, 500);
-                return true;
-            }
-            throw new Error('Server responded with non-OK status');
+            updateConnectionStatus(response.ok ? 'connected' : 'disconnected');
+            return response.ok;
         } catch (error) {
-            console.error('Connection check failed:', error);
             updateConnectionStatus('disconnected');
-            // Retry after 5 seconds (reduced from immediate retry)
-            setTimeout(checkConnection, 5000);
             return false;
         }
     }
@@ -166,4 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function scrollToBottom() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+    
+    console.log("Chatbot initialization complete");
 });

@@ -1,3 +1,5 @@
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import Any, Text, Dict, List, Optional
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -12,6 +14,7 @@ from hashlib import blake2b
 import os
 import yaml
 from pathlib import Path
+import uuid
 
 # --------------------------
 # Configuration and Constants
@@ -38,12 +41,8 @@ SUPPORTED_LANGUAGES = {
 }
 
 CONFIG_DIR = Path(__file__).parent / "config"
-try:
-    with open(CONFIG_DIR / "dept_emails.yml") as f:
-        DEPT_EMAILS = yaml.safe_load(f)
-except Exception as e:
-    logger.error(f"Failed to load department emails config: {e}")
-    DEPT_EMAILS = {}
+with open(CONFIG_DIR / "dept_emails.yml") as f:
+    DEPT_EMAILS = yaml.safe_load(f)
 
 # --------------------------
 # Core Services
@@ -77,12 +76,30 @@ class TranslationService:
 
 class EmailService:
     @staticmethod
-    def send_email(recipient: str, subject: str, body: str) -> bool:
+    def send_email(recipient: str, subject: str, body: str, reply_to: str = None) -> bool:
         try:
-            with smtplib.SMTP(settings.smtp_server, settings.smtp_port) as server:
+            from email.message import EmailMessage
+            msg = EmailMessage()
+            msg["Subject"] = str(subject)
+            msg["From"] = str(settings.smtp_username)
+            msg["To"] = str(recipient)
+            if reply_to:
+                msg["Reply-To"] = str(reply_to)
+            msg.set_content(str(body))
+            with smtplib.SMTP(str(settings.smtp_server), int(settings.smtp_port)) as server:
                 server.starttls()
-                server.login(settings.smtp_username, settings.smtp_password)
-                server.sendmail(settings.smtp_username, recipient, f"Subject: {subject}\n\n{body}")
+                # --- DEBUG PRINTS ---
+                smtp_username = settings.smtp_username
+                smtp_password = settings.smtp_password
+                print("SMTP_USERNAME:", smtp_username, type(smtp_username))
+                print("SMTP_PASSWORD:", smtp_password, type(smtp_password))
+                if isinstance(smtp_username, bytes):
+                    smtp_username = smtp_username.decode()
+                if isinstance(smtp_password, bytes):
+                    smtp_password = smtp_password.decode()
+                # --- END DEBUG ---
+                server.login(smtp_username, smtp_password)
+                server.send_message(msg)
             return True
         except Exception as e:
             logger.error(f"Email sending failed to {recipient}: {e}")
@@ -113,6 +130,22 @@ def get_localized_examples(lang: str) -> str:
 # --------------------------
 # Custom Actions
 # --------------------------
+
+class ActionSetEmailSlot(Action):
+    def name(self) -> Text:
+        return "action_set_email_slot"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
+        # Get email from sender_id (which should be the email)
+        user_email = tracker.sender_id
+        logger.info(f"Setting email slot for user: {user_email}")
+        
+        # Only set if it looks like an email
+        if user_email and '@' in user_email:
+            return [SlotSet("email", user_email)]
+        else:
+            logger.warning(f"Invalid email format in sender_id: {user_email}")
+            return []
 
 class ActionDetectLanguage(Action):
     def name(self) -> Text:
@@ -172,16 +205,25 @@ class ActionSubmitComplaint(Action):
             area = tracker.get_slot("area")
             complaint = tracker.get_slot("complaint_details")
             sender = tracker.sender_id
+            user_email = tracker.get_slot("email")
+
+            if not user_email:
+                error_msg = ts.translate("⚠️ Complaint submission failed: Email slot not set. Please provide your email address to receive confirmation.", lang)
+                dispatcher.utter_message(text=error_msg)
+                return []
 
             complaint_id = generate_complaint_id(state, dept)
-            recipient = DEPT_EMAILS.get(state, {}).get(dept)
+            recipient = (
+                DEPT_EMAILS.get(state, {}).get(dept) or
+                DEPT_EMAILS.get("default", {}).get("default")
+            )
             if not recipient:
                 raise ValueError(f"No email for {dept} in {state}")
 
             now = datetime.now().strftime("%d-%m-%Y %H:%M")
             subject = f"Complaint ID: {complaint_id} - {dept} Issue in {area}, {state}"
             body = (
-                f"Complaint ID: {complaint_id}\nDate: {now}\nFrom: {sender}\n\n"
+                f"Complaint ID: {complaint_id}\nDate: {now}\nFrom: {user_email}\n\n"
                 f"Department: {dept}\nLocation: {area}, {state}\n\nDetails:\n{complaint}\n\n"
                 "Expected Resolution Time: 3-5 working days\n\n---\nAuto-generated from Central Grievance Portal"
             )
@@ -192,17 +234,21 @@ class ActionSubmitComplaint(Action):
                 f"Location: {area}, {state}\n\nDetails:\n{complaint}\n\nExpected Resolution: 3-5 working days"
             )
 
-            if not EmailService.send_email(recipient, subject, body):
-                raise Exception("Failed to send to department")
-            if not EmailService.send_email(sender, confirmation_subject, confirmation_body):
-                raise Exception("Failed to send confirmation")
+            # Send to department with user's email as reply-to
+            sent_to_dept = EmailService.send_email(recipient, subject, body, reply_to=user_email)
+            # Send confirmation to user (no reply-to needed)
+            sent_to_user = EmailService.send_email(user_email, confirmation_subject, confirmation_body)
 
-            msg = ts.translate(
-                f"\u2705 Complaint registered successfully! ID: {complaint_id}\n• Department: {dept}\n"
-                f"• Location: {area}, {state}\nA confirmation has been sent to your email.",
-                lang
-            )
-            dispatcher.utter_message(text=msg)
+            if sent_to_dept and sent_to_user:
+                msg = ts.translate(
+                    f"\u2705 Complaint registered successfully! ID: {complaint_id}\n• Department: {dept}\n"
+                    f"• Location: {area}, {state}\nA confirmation has been sent to your email.",
+                    lang
+                )
+                dispatcher.utter_message(text=msg)
+            else:
+                error_msg = ts.translate(f"\u26a0\ufe0f Failed to submit complaint: Could not send email(s).", lang)
+                dispatcher.utter_message(text=error_msg)
         except Exception as e:
             logger.error(f"Complaint submission failed: {e}")
             error_msg = ts.translate(f"\u26a0\ufe0f Failed to submit complaint: {str(e)}", lang)

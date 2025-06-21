@@ -104,7 +104,14 @@ slots:
     mappings:
       - type: custom
 
+  email:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
 actions:
+  - action_set_email_slot
   - action_detect_language
   - action_translate
   - action_ask_department
@@ -120,3 +127,4 @@ forms:
       - area
       - department
       - complaint_details
+      - email
