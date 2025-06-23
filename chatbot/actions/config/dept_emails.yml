@@ -1,0 +1,18 @@
+delhi:
+  water: aashikushwaha05@gmail.com
+  electricity: aashikushwaha05@gmail.com
+  transport: aashikushwaha05@gmail.com
+  education: aashikushwaha05@gmail.com
+  health: aashikushwaha05@gmail.com
+  police: aashikushwaha05@gmail.com
+  fire: aashikushwaha05@gmail.com
+  public_works: aashikushwaha05@gmail.com
+maharashtra:
+  water: aashikushwaha05@gmail.com
+  electricity: aashikushwaha05@gmail.com
+karnataka:
+  water: aashikushwaha05@gmail.com
+  electricity: aashikushwaha05@gmail.com
+
+default:
+  default: aashikushwaha05@gmail.com

@@ -1,9 +1,10 @@
 version: "3.1"
 
 stories:
-- story: complaint_happy_path
+- story: complaint_form
   steps:
     - intent: greet
+    - action: action_set_email_slot
     - action: action_detect_language
     - action: utter_greet
     - action: utter_ask_state
@@ -26,19 +27,11 @@ stories:
         - department
     - action: utter_ask_complaint_details
     - intent: provide_complaint_details
-    - action: complaint_form
-    - active_loop: complaint_form
-    - active_loop: null
+      entities:
+        - complaint_details
+    - slot_was_set:
+        - complaint_details
     - action: action_generate_draft
     - action: utter_ask_confirmation
     - intent: confirm
     - action: action_submit_complaint
-    - action: utter_thank_you
-
-- story: form_completion_path
-  steps:
-    - intent: provide_complaint_details
-    - action: complaint_form
-    - active_loop: null
-    - action: action_generate_draft
-    - action: utter_ask_confirmation

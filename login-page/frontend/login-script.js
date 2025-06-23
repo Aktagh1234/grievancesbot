@@ -35,6 +35,7 @@ loginTab.addEventListener("click", () => {
 
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("userEmail", email);
         window.location.href = "../../home-page/frontend/home-index.html";
       } else {
         alert(data.error || "Login failed.");

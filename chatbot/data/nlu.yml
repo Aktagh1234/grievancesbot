@@ -310,18 +310,18 @@ nlu:
   examples: |
     - The street light has not been working for 3 days.
     - Water supply in our area is not regular.
-    - There’s a power cut every evening in our locality.
+    - There's a power cut every evening in our locality.
     - The road near my house is damaged with many potholes.
     - Garbage has not been collected by the municipal corporation.
     - I want to report a problem to the police.
     - I need to report a scam online.
     - No action is being taken on abuse cases by the women and child welfare office.
     - Dengue cases are rising but the health department hasn't responded.
-    - Sanitation workers haven’t come for several days.
+    - Sanitation workers haven't come for several days.
     - Public works department is not repairing damaged infrastructure.
     - Housing development work has been stopped by the urban authority.
     - The panchayat is not taking action on our complaints.
-    - Our wages issue hasn’t been resolved by the labour department.
+    - Our wages issue hasn't been resolved by the labour department.
     - Land record updates are delayed by the revenue office.
     - No help from consumer cell regarding a faulty product.
     - Factory pollution is increasing, but no action by the pollution board.
@@ -358,7 +358,7 @@ nlu:
     - Women in our area are facing domestic abuse and no help is given.
     - Dengue cases are rising but no fumigation is being done.
     - Drains are overflowing and no sanitation worker has come.
-    - Public roads are broken and the PWD hasn’t repaired them.
+    - Public roads are broken and the PWD hasn't repaired them.
     - My housing allotment is pending for years.
     - Panchayat is ignoring our land dispute issue.
     - Labourers are being exploited and no action is taken.
@@ -384,7 +384,7 @@ nlu:
     - Aadhaar center is not functioning properly.
     - Voter card has the wrong address and name.
     - Birth registration is pending for months.
-    - My land record shows someone else’s name.
+    - My land record shows someone else's name.
     - Construction is going on illegally in a residential zone.
     - Liquor shops are open beyond the permitted time.
     - Fire safety measures are missing in the new building.
