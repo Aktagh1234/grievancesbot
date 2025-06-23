@@ -35,4 +35,3 @@ stories:
     - action: utter_ask_confirmation
     - intent: confirm
     - action: action_submit_complaint
-    - action: utter_thank_you

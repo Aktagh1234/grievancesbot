@@ -7,30 +7,7 @@ intents:
   - provide_department
   - provide_complaint_details
   - confirm
-
-responses:
-  utter_greet:
-    - text: "Hello! I'm Upaay, your grievance assistant. How can I help you today?"
-  utter_ask_state:
-    - text: "Please tell me your state:"
-  utter_ask_area:
-    - text: "Which area/city in {state} are you facing the issue?"
-  utter_ask_area_alternate:
-    - text: "Could you tell me the nearest landmark or district instead?"
-  utter_ask_department:
-    - text: "Select department of relevance (e.g. {examples}):"
-  utter_ask_complaint_details:
-    - text: "Describe your complaint in detail (location, duration, and any relevant details):"
-  utter_ask_confirmation:
-    - text: "Would you like me to send this complaint to the respective department?"
-  utter_ask_what_to_edit:
-    - text: "What would you like to change in your complaint?"
-  utter_thank_you:
-    - text: "Thank you! Your complaint has been registered with ID {complaint_id}."
-  utter_goodbye:
-    - text: "Goodbye! Feel free to reach out again if you need help."
-  utter_complaint_submitted:
-    - text: "Your complaint has been submitted successfully. Reference ID: {complaint_id}"
+  - deny  # used in slot mapping for confirmation
 
 entities:
   - state
@@ -78,16 +55,11 @@ slots:
       - type: from_text
         intent: provide_complaint_details
 
-  confirmation:
-    type: bool
-    influence_conversation: false
+  email:
+    type: text
+    influence_conversation: true
     mappings:
-      - type: from_intent
-        intent: confirm
-        value: true
-      - type: from_intent
-        intent: deny
-        value: false
+      - type: from_text  # This gets auto-filled via action_set_email_slot
 
   language:
     type: text
@@ -99,11 +71,50 @@ slots:
     mappings:
       - type: custom
 
-  email:
-    type: text
-    influence_conversation: true
+  confirmation:
+    type: bool
+    influence_conversation: false
     mappings:
-      - type: from_text
+      - type: from_intent
+        intent: confirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
+
+responses:
+  utter_greet:
+    - text: "Hello! I'm Upaay, your grievance assistant. How can I help you today?"
+
+  utter_ask_state:
+    - text: "Please tell me your state:"
+
+  utter_ask_area:
+    - text: "Which area/city in {state} are you facing the issue?"
+
+  utter_ask_area_alternate:
+    - text: "Could you tell me the nearest landmark or district instead?"
+
+  utter_ask_department:
+    - text: "Select department of relevance (e.g. {examples}):"
+
+  utter_ask_complaint_details:
+    - text: "Describe your complaint in detail (location, duration, and any relevant details):"
+
+  utter_ask_confirmation:
+    - text: "Would you like me to send this complaint to the respective department?"
+
+  utter_ask_what_to_edit:
+    - text: "What would you like to change in your complaint?"
+
+  utter_thank_you:
+    - text: "Thank you! Your complaint has been registered with ID {complaint_id}."
+
+  utter_goodbye:
+    - text: "Goodbye! Feel free to reach out again if you need help."
+
+  utter_complaint_submitted:
+    - text: "Your complaint has been submitted successfully. Reference ID: {complaint_id}"
 
 actions:
   - action_set_email_slot
@@ -111,13 +122,7 @@ actions:
   - action_ask_department
   - action_generate_draft
   - action_submit_complaint
-  - utter_greet
-  - utter_ask_state
-  - utter_ask_area
-  - utter_ask_complaint_details
-  - utter_ask_confirmation
-  - utter_thank_you
-  
+
 forms:
   complaint_form:
     required_slots:

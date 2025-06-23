@@ -20,14 +20,17 @@ import uuid
 # Configuration and Constants
 # --------------------------
 
+from dotenv import load_dotenv
+
+# Load .env from the same directory as actions.py
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
+
 class Settings(BaseSettings):
     smtp_server: str = "smtp.gmail.com"
     smtp_port: int = 587
     smtp_username: str = os.getenv("SMTP_USERNAME", "")
     smtp_password: str = os.getenv("SMTP_PASSWORD", "")
 
-    class SettingsConfig:
-        env_file = ".env"
 
 settings = Settings()
 
@@ -243,37 +246,56 @@ class ActionSubmitComplaint(Action):
             now = datetime.now().strftime("%d-%m-%Y %H:%M")
             subject = f"Complaint ID: {complaint_id} - {dept} Issue in {area}, {state}"
             body = (
-                f"Complaint ID: {complaint_id}\nDate: {now}\nFrom: {user_email}\n\n"
-                f"Department: {dept}\nLocation: {area}, {state}\n\nDetails:\n{complaint}\n\n"
-                "Expected Resolution Time: 3-5 working days\n\n---\nAuto-generated from Central Grievance Portal"
-            )
+                    f"Subject: Grievance Submission – {dept.capitalize()} Department\n\n"
+                    f"Dear Officer,\n\n"
+                    f"This is to inform you that a grievance has been submitted via the Central Grievance Portal.\n\n"
+                    f"🆔 Complaint ID: {complaint_id}\n📅 Date: {now}\n📍 Location: {area}, {state}\n👤 From: {user_email}\n\n"
+                    f"📝 Department Concerned: {dept.capitalize()}\n\n"
+                    f"📄 Complaint Details:\n{complaint}\n\n"
+                    f"---\nThis is an automated email from the Central Grievance Portal.\nPlease do not reply directly to this message."
+                )
 
             confirmation_subject = f"Complaint Registered: {complaint_id}"
             confirmation_body = (
-                f"Your complaint has been registered.\n\nID: {complaint_id}\nDepartment: {dept}\n"
-                f"Location: {area}, {state}\n\nDetails:\n{complaint}\n\nExpected Resolution: 3-5 working days"
-            )
+                    f"Dear Citizen,\n\n"
+                    f"✅ Your complaint has been successfully registered with the Central Grievance Portal.\n\n"
+                    f"🆔 Complaint ID: {complaint_id}\n"
+                    f"📅 Date: {now}\n"
+                    f"📍 Location: {area}, {state}\n"
+                    f"🏢 Department: {dept.capitalize()}\n\n"
+                    f"📝 Complaint Details:\n{complaint}\n\n"
+                    f"⏳ Expected Resolution: Within 3–5 working days\n\n"
+                    f"Thank you for helping us improve public services.\n"
+                    f"For queries or updates, please keep this complaint ID handy.\n\n"
+                    f"Regards,\nCentral Grievance Cell"
+                )
+
 
             # Send to department with user's email as reply-to
             sent_to_dept = EmailService.send_email(recipient, subject, body, reply_to=user_email)
+            if not sent_to_dept:
+                error_msg = ts.translate("⚠️ Failed to submit complaint: Could not send email to department.", lang)
+                dispatcher.utter_message(text=error_msg)
+                return []
+
             # Send confirmation to user (no reply-to needed)
             sent_to_user = EmailService.send_email(user_email, confirmation_subject, confirmation_body)
-
-            if sent_to_dept and sent_to_user:
-                msg = ts.translate(
-                    f"\u2705 Complaint registered successfully! ID: {complaint_id}\n• Department: {dept}\n"
-                    f"• Location: {area}, {state}\nA confirmation has been sent to your email.",
-                    lang
-                )
-                dispatcher.utter_message(text=msg)
-            else:
-                error_msg = ts.translate(f"\u26a0\ufe0f Failed to submit complaint: Could not send email(s).", lang)
+            if not sent_to_user:
+                error_msg = ts.translate("⚠️ Complaint sent to department, but confirmation email to you failed.", lang)
                 dispatcher.utter_message(text=error_msg)
+                return []
+
+            # If both succeeded
+            msg = ts.translate(
+                f"✅ Complaint registered successfully! ID: {complaint_id}\n• Department: {dept}\n"
+                f"• Location: {area}, {state}\nA confirmation has been sent to your email.",
+                lang
+            )
+            dispatcher.utter_message(text=msg)
+
         except Exception as e:
-            logger.error(f"Complaint submission failed: {e}")
-            error_msg = ts.translate(f"\u26a0\ufe0f Failed to submit complaint: {str(e)}", lang)
-            dispatcher.utter_message(text=error_msg)
-        return []
+            logger.error(f"Error in ActionSubmitComplaint: {e}")
+            dispatcher.utter_message(text="Sorry, something went wrong while submitting your complaint.")
 
 class ActionAskDepartment(Action):
     def name(self) -> Text:

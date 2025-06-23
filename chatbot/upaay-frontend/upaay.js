@@ -158,24 +158,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function processRasaResponse(responses) {
         responses.forEach(response => {
             if (response.text) {
-                // Detect if this is the confirmation prompt
-                const isConfirmationPrompt = response.text.includes("Would you like me to send this complaint to the respective department?");
-                // Detect if this is the draft email
                 const isDraft = response.text.includes("Here is your draft email");
-
+                const isConfirmationPrompt = response.text.includes("Would you like me to send this complaint");
+                const isFinalConfirmation = response.text.includes("✅ Complaint registered successfully");
+    
                 if (isDraft) {
-                    // Only add the draft, do not add confirm/cancel
-                    addBotMessage(response.text, false);
+                    addBotMessage(response.text, false);  // Show draft only
                 } else if (isConfirmationPrompt) {
-                    // Add the confirmation prompt with confirm/cancel buttons
-                    addBotMessage(response.text, true);
+                    addBotMessage(response.text, true);   // Show confirm/cancel buttons
+                } else if (isFinalConfirmation) {
+                    // Clear any leftover buttons from previous messages (optional UX polish)
+                    document.querySelectorAll('.buttons-container').forEach(el => el.remove());
+                    addBotMessage(response.text, false);  // Just show success, no buttons
                 } else {
-                    // For all other messages, just show the text without buttons
                     addBotMessage(response.text, false);
                 }
             }
         });
-    }
+    }    
+
+    document.querySelectorAll('.buttons-container').forEach(el => el.remove());
+
 
     async function checkConnection() {
         try {
