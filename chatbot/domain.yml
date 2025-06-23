@@ -2,16 +2,11 @@ version: "3.1"
 
 intents:
   - greet
-  - register_complaint
   - provide_state
   - provide_area
   - provide_department
   - provide_complaint_details
   - confirm
-  - deny
-  - thank_you
-  - goodbye
-  - provide_edit_request
 
 responses:
   utter_greet:
@@ -113,13 +108,16 @@ slots:
 actions:
   - action_set_email_slot
   - action_detect_language
-  - action_translate
   - action_ask_department
-  - action_handle_edit
   - action_generate_draft
-  - utter_ask_confirmation
   - action_submit_complaint
-
+  - utter_greet
+  - utter_ask_state
+  - utter_ask_area
+  - utter_ask_complaint_details
+  - utter_ask_confirmation
+  - utter_thank_you
+  
 forms:
   complaint_form:
     required_slots:

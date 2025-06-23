@@ -127,6 +127,16 @@ def get_localized_examples(lang: str) -> str:
     }
     return examples.get(lang, examples["en"])
 
+def normalize_department(dept: str) -> str:
+    if not dept:
+        return ""
+    dept = dept.lower().strip()
+    if "board" in dept:
+        dept = dept.replace("board", "").strip()
+    if "department" in dept:
+        dept = dept.replace("department", "").strip()
+    return dept
+
 # --------------------------
 # Custom Actions
 # --------------------------
@@ -166,29 +176,39 @@ class ActionGenerateDraft(Action):
         return "action_generate_draft"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
-        logger.info("ActionGenerateDraft triggered!")  # Debug log
+        logger.info("✅ action_generate_draft TRIGGERED")
+
+        # Validate required slots
+        slots = {slot: tracker.get_slot(slot) for slot in ["state", "area", "department", "complaint_details", "email"]}
+        logger.info(f"🎯 Slots received for draft:\n{slots}")
+
+        missing = [s for s in ["state", "area", "department", "complaint_details"] if not slots.get(s)]
+        if missing:
+            msg = f"⚠️ Cannot generate draft. Missing: {', '.join(missing)}"
+            logger.warning(msg)
+            dispatcher.utter_message(text=msg)
+            return []
+
         try:
-            logger.info(f"Current slots: state={tracker.get_slot('state')}, area={tracker.get_slot('area')}")  # Debug log
-            validate_required_slots(tracker)
             lang = tracker.get_slot("language") or "en"
             ts = TranslationService()
+
             email_text = (
-                "Subject: Complaint about {department}\n\n"
-                "Dear Officer,\n\n"
-                "I want to report an issue regarding {department} in {area}, {state}.\n\n"
-                "Details:\n{complaint}\n\n"
-                "Please address this matter promptly.\n\nRegards,\nConcerned Citizen"
-            ).format(
-                department=tracker.get_slot("department"),
-                area=tracker.get_slot("area"),
-                state=tracker.get_slot("state"),
-                complaint=tracker.get_slot("complaint_details")
-            )
-            logger.info(f"Generated draft: {email_text}")  # Debug log
+    f"Subject: Grievance Submission Regarding the {normalize_department(slots['department'])} Department in {slots['area']}, {slots['state']}\n\n"
+    f"Dear Sir/Madam,\n\n"
+    f"I am writing to formally raise a concern regarding an issue related to the {normalize_department(slots['department'])} department in {slots['area']}, {slots['state']}.\n\n"
+    f"Details of the issue:\n{slots['complaint_details']}\n\n"
+    f"I kindly request that this matter be addressed at the earliest convenience.\n\n"
+    f"Thank you for your attention to this issue.\n\n"
+    f"Sincerely,\nA Concerned Citizen"
+)
+
+            logger.info(f"📧 Draft Email:\n{email_text}")
             dispatcher.utter_message(text=ts.translate("Here is your draft email:\n\n" + email_text, lang, tracker))
+
         except Exception as e:
-            logger.error(f"Draft generation failed: {e}")
-            dispatcher.utter_message(text="Sorry, I couldn't generate the draft. Please try again.")
+            logger.error(f"🚨 Error in draft generation: {e}")
+            dispatcher.utter_message(text="Sorry, something went wrong while drafting your complaint.")
         return []
 
 class ActionSubmitComplaint(Action):
@@ -201,7 +221,7 @@ class ActionSubmitComplaint(Action):
         try:
             validate_required_slots(tracker)
             state = (tracker.get_slot("state") or "").lower()
-            dept = (tracker.get_slot("department") or "").lower()
+            dept = normalize_department(tracker.get_slot("department") or "")
             area = tracker.get_slot("area")
             complaint = tracker.get_slot("complaint_details")
             sender = tracker.sender_id

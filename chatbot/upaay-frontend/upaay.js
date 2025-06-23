@@ -158,17 +158,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function processRasaResponse(responses) {
         responses.forEach(response => {
             if (response.text) {
-                const isComplaint = response.text.length > 100 || 
-                                   response.text.includes("Here is your draft email") || 
-                                   response.text.includes("Complaint registered");
-                
-                if (isComplaint && response.text.includes("Here is your draft email")) {
-                    // First add the email draft without buttons
+                // Detect if this is the confirmation prompt
+                const isConfirmationPrompt = response.text.includes("Would you like me to send this complaint to the respective department?");
+                // Detect if this is the draft email
+                const isDraft = response.text.includes("Here is your draft email");
+
+                if (isDraft) {
+                    // Only add the draft, do not add confirm/cancel
                     addBotMessage(response.text, false);
-                    // Then add a separate message with confirm/cancel buttons
-                    addBotMessage("Please confirm or cancel this complaint:", true);
+                } else if (isConfirmationPrompt) {
+                    // Add the confirmation prompt with confirm/cancel buttons
+                    addBotMessage(response.text, true);
                 } else {
-                    addBotMessage(response.text, isComplaint);
+                    // For all other messages, just show the text without buttons
+                    addBotMessage(response.text, false);
                 }
             }
         });

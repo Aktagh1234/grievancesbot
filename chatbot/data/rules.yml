@@ -1,7 +1,8 @@
 version: "3.1"
 
 rules:
-- rule: Initial Language Detection
+
+- rule: Start conversation and detect language
   steps:
     - intent: greet
     - action: action_set_email_slot
@@ -9,34 +10,34 @@ rules:
     - action: utter_greet
     - action: utter_ask_state
 
-- rule: Handle State Input
+- rule: Handle state input
   steps:
     - intent: provide_state
     - slot_was_set:
-      - state
+        - state
     - action: utter_ask_area
 
-- rule: Handle Area Input
+- rule: Handle area input
   steps:
     - intent: provide_area
     - slot_was_set:
-      - area
+        - area
     - action: action_ask_department
 
-- rule: Handle Department Input
+- rule: Handle department input
   steps:
     - intent: provide_department
     - slot_was_set:
-      - department
+        - department
     - action: utter_ask_complaint_details
 
-- rule: Generate Draft After Form Completion
-  condition:
-    - active_loop: null
-    - slot_was_set:
-      - complaint_details
+- rule: Generate draft and ask confirmation
   steps:
+    - intent: provide_complaint_details
+    - slot_was_set:
+        - complaint_details
     - action: action_generate_draft
+    - action: utter_ask_confirmation
 
 - rule: Submit complaint after confirmation
   steps:
