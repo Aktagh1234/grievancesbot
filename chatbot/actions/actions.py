@@ -309,3 +309,93 @@ class ActionAskDepartment(Action):
         ).format(examples=examples)
         dispatcher.utter_message(text=question)
         return []
+
+class ActionUtterGreet(Action):
+    def name(self) -> Text:
+        return "action_utter_greet"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Hello! I'm Upaay, your grievance assistant. How can I help you today?", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterAskState(Action):
+    def name(self) -> Text:
+        return "action_utter_ask_state"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Please tell me your state:", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterAskArea(Action):
+    def name(self) -> Text:
+        return "action_utter_ask_area"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        state = tracker.get_slot("state") or ""
+        msg = ts.translate(f"Which area/city in {state} are you facing the issue?", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterAskDepartment(Action):
+    def name(self) -> Text:
+        return "action_utter_ask_department"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Select department of relevance (e.g. Water, Electricity, Land):", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterAskComplaintDetails(Action):
+    def name(self) -> Text:
+        return "action_utter_ask_complaint_details"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Describe your complaint in detail (location, duration, and any relevant details):", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterAskConfirmation(Action):
+    def name(self) -> Text:
+        return "action_utter_ask_confirmation"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Would you like me to send this complaint to the respective department?", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterThankYou(Action):
+    def name(self) -> Text:
+        return "action_utter_thank_you"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        complaint_id = tracker.get_slot("complaint_id") or ""
+        msg = ts.translate(f"Thank you! Your complaint has been registered with ID {complaint_id}.", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
+
+class ActionUtterGoodbye(Action):
+    def name(self) -> Text:
+        return "action_utter_goodbye"
+
+    async def run(self, dispatcher, tracker, domain):
+        lang = tracker.get_slot("language") or "en"
+        ts = TranslationService()
+        msg = ts.translate("Goodbye! Feel free to reach out again if you need help.", lang, tracker)
+        dispatcher.utter_message(text=msg)
+        return []
