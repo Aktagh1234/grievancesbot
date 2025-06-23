@@ -1,37 +1,39 @@
 version: "3.1"
 
 stories:
-- story: complaint_form
+- story: Complaint registration full flow
   steps:
     - intent: greet
     - action: action_set_email_slot
     - action: action_detect_language
-    - action: utter_greet
-    - action: utter_ask_state
+    - action: action_utter_greet
+    - action: action_utter_ask_state
+
     - intent: provide_state
       entities:
         - state
     - slot_was_set:
         - state
-    - action: utter_ask_area
+    - action: action_utter_ask_area
+
     - intent: provide_area
       entities:
         - area
     - slot_was_set:
         - area
-    - action: action_ask_department
+    - action: action_utter_ask_department
+
     - intent: provide_department
       entities:
         - department
     - slot_was_set:
         - department
-    - action: utter_ask_complaint_details
+    - action: action_utter_ask_complaint_details
+
     - intent: provide_complaint_details
       entities:
         - complaint_details
     - slot_was_set:
         - complaint_details
     - action: action_generate_draft
-    - action: utter_ask_confirmation
-    - intent: confirm
-    - action: action_submit_complaint
+    - action: action_utter_ask_confirmation

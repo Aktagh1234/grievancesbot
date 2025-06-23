@@ -115,14 +115,34 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom();
     }
 
-    function handleLanguageChange() {
+    async function handleLanguageChange() {
         const selectedLanguage = languageSelect.value;
         addBotMessage(`Language changed to ${languageSelect.options[languageSelect.selectedIndex].text}`);
+        // Set the language slot in Rasa
+        await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                event: "slot",
+                name: "language",
+                value: selectedLanguage
+            })
+        });
     }
 
     async function sendToRasa(message) {
         updateConnectionStatus('connecting');
-        
+        // Always set the language slot before sending the message
+        const selectedLanguage = languageSelect.value;
+        await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                event: "slot",
+                name: "language",
+                value: selectedLanguage
+            })
+        });
         try {
             console.log("Sending to Rasa:", message);
             const response = await fetch(rasaServerUrl, {
@@ -134,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     sender: senderId,
                     message: message,
                     metadata: {
-                        language: languageSelect.value
+                        language: selectedLanguage
                     }
                 })
             });
