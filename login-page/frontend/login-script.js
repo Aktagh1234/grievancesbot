@@ -6,6 +6,8 @@ const formContent = document.getElementById("form-content");
 loginTab.addEventListener("click", () => {
   loginTab.classList.add("active");
   signupTab.classList.remove("active");
+  loginTab.textContent = "Log In";    // <- change button text
+  signupTab.textContent = "Sign Up";  // reset the other tab
   formTitle.textContent = "LOGIN FORM";
 
   formContent.innerHTML = `
@@ -17,7 +19,7 @@ loginTab.addEventListener("click", () => {
       <span class="icon">🔐</span>
       <input type="password" id="login-password" placeholder="Enter your password" />
     </div>
-    <button id="login-btn">Sign In</button>
+    <button id="login-btn">Log In</button>
   `;
 
   document.getElementById("login-btn").addEventListener("click", async () => {
@@ -44,9 +46,12 @@ loginTab.addEventListener("click", () => {
   });
 });
 
+
 signupTab.addEventListener("click", () => {
   signupTab.classList.add("active");
   loginTab.classList.remove("active");
+  signupTab.textContent = "Sign Up";   // update this tab
+  loginTab.textContent = "Log In";     // reset other tab
   formTitle.textContent = "SIGNUP FORM";
 
   formContent.innerHTML = `
@@ -84,7 +89,7 @@ signupTab.addEventListener("click", () => {
 
       const data = await response.json();
       if (response.ok) {
-        window.location.href = "../../home-page/frontend/home-index.html";  // ✅ redirect on success
+        window.location.href = "../../home-page/frontend/home-index.html";
       } else {
         alert(data.error || "Signup failed.");
       }
@@ -93,6 +98,7 @@ signupTab.addEventListener("click", () => {
     }
   });
 });
+
 
 // Load login form by default
 loginTab.click();
