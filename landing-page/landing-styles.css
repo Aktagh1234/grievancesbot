@@ -2,7 +2,6 @@ body,
 html {
   margin: 0;
   padding: 0;
-  padding-top: 70px;
   background: linear-gradient(to right, #e0f7fa, #f3e5f5);
   font-family: sans-serif;
   scroll-behavior: smooth;
@@ -61,19 +60,24 @@ nav {
   overflow: hidden;
 }
 
-.my-image {
+.background {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
+  object-position: center right; 
 }
 
 .text-overlay {
   position: absolute;
-  max-width: 500px;
-  padding: 50px 80px;
-  top: 15%;
-  left: 10%;
+  top: 20%;
+  right: 5%;
+  background-color: rgba(255, 255, 255, 0.75);  /* Soft white background for readability */
+  padding: 40px 40px;
+  border-radius: 20px;
+  max-width: 400px;
   color: #0c1a32;
+  font-family: "League Spartan", sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .text-overlay h1 {
@@ -89,19 +93,47 @@ nav {
   font-family: "Montserrat", sans-serif;
 }
 
+.new-hero {
+  background-image: url('bg.jpg');  
+  background-size: 90%;            /* fills the container */
+  background-position: center center; /* centers both vertically & horizontally */
+  background-repeat: no-repeat;
+  background-color: transparent !important;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.text-overlay.left {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 400px;
+  color: #0c1a32;
+  font-family: "League Spartan", sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+
 .convo {
-  background-color:#00478A;
+  background-color: #00478A;
   color: white;
-  border: 2px solid white;
-  font-weight: 500;
-  padding: 6px 12px;
+  border: none;
+  padding: 10px 20px;
   border-radius: 25px;
-  transition: box-shadow 0.3s ease;
-  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: background 0.3s ease;
 }
 
 .convo:hover {
-  box-shadow: 0 4px 10px orange;
+  background-color: #2e6e5a;
 }
 
 .my-collage{
