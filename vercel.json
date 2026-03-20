@@ -1,0 +1,9 @@
+{
+  "framework": null,
+  "redirects": [
+    { "source": "/", "destination": "/landing-page/landing-index.html", "statusCode": 307 }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" }
+  ]
+}
