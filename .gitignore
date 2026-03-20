@@ -10,8 +10,9 @@ venv/
 *.db
 events.csv
 
-# Ignore model artifacts
-models/
+# Models are needed for Render deployment (Docker build)
+# To save space, push only the latest model
+# models/
 
 # Ignore logs
 *.log

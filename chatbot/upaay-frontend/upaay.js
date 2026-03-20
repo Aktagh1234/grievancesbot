@@ -14,8 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log("Input elements enabled");
     
-    // Use consistent origin (localhost instead of 127.0.0.1)
-    const rasaServerUrl = 'http://localhost:5005/webhooks/rest/webhook';
+    // ============================================================
+    // RASA SERVER URL CONFIGURATION
+    // When deploying to Render, replace this with your Render URL
+    // e.g., 'https://your-rasa-app.onrender.com'
+    // ============================================================
+    const RASA_PRODUCTION_URL = null; // Set to your Render URL when deployed
+    
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const RASA_BASE_URL = isLocal ? 'http://localhost:5005' : (RASA_PRODUCTION_URL || 'http://localhost:5005');
+    const rasaServerUrl = RASA_BASE_URL + '/webhooks/rest/webhook';
     let userEmail = localStorage.getItem("userEmail");
     let senderId = userEmail || 'default_user';
     
@@ -33,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (userEmail) {
             try {
                 console.log("Setting email slot for:", userEmail);
-                const response = await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+                const response = await fetch(RASA_BASE_URL + "/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -119,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedLanguage = languageSelect.value;
         addBotMessage(`Language changed to ${languageSelect.options[languageSelect.selectedIndex].text}`);
         // Set the language slot in Rasa
-        await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+        await fetch(RASA_BASE_URL + "/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -134,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateConnectionStatus('connecting');
         // Always set the language slot before sending the message
         const selectedLanguage = languageSelect.value;
-        await fetch("http://localhost:5005/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
+        await fetch(RASA_BASE_URL + "/conversations/" + encodeURIComponent(senderId) + "/tracker/events", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -204,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // Use GET to Rasa root endpoint instead of OPTIONS to webhook
             // OPTIONS preflight requests may not be properly handled by Rasa's REST channel
-            const response = await fetch('http://localhost:5005/', {
+            const response = await fetch(RASA_BASE_URL + '/', {
                 method: 'GET',
                 mode: 'cors'
             });

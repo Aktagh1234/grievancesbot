@@ -1,0 +1,29 @@
+# Render Blueprint - GrievancesBot
+# Deploy both Rasa Server and Action Server
+
+services:
+  # Rasa Chatbot Server
+  - type: web
+    name: grievancesbot-rasa
+    runtime: docker
+    dockerfilePath: chatbot/Dockerfile
+    dockerContext: chatbot
+    plan: standard  # Rasa needs ~1GB RAM minimum
+    envVars:
+      - key: PORT
+        value: 5005
+
+  # Rasa Action Server
+  - type: web
+    name: grievancesbot-actions
+    runtime: docker
+    dockerfilePath: chatbot/Dockerfile.actions
+    dockerContext: chatbot
+    plan: starter
+    envVars:
+      - key: PORT
+        value: 5055
+      - key: SMTP_USERNAME
+        sync: false  # Set manually in Render dashboard
+      - key: SMTP_PASSWORD
+        sync: false  # Set manually in Render dashboard
