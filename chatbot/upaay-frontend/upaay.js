@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // When deploying to Render, replace this with your Render URL
     // e.g., 'https://your-rasa-app.onrender.com'
     // ============================================================
-    const RASA_PRODUCTION_URL = null; // Set to your Render URL when deployed
+    const RASA_PRODUCTION_URL = 'https://grievancesbot-rasa.onrender.com'; // Set to your Render URL when deployed
     
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const RASA_BASE_URL = isLocal ? 'http://localhost:5005' : (RASA_PRODUCTION_URL || 'http://localhost:5005');

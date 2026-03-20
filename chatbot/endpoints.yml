@@ -42,7 +42,7 @@
 #  queue: queue
 
 action_endpoint:
-  url: "http://localhost:5055/webhook"
+  # url: "http://localhost:5055/webhook"
   # For Render deployment, change above to your action server URL:
-  # url: "https://grievancesbot-actions.onrender.com/webhook"
+  url: "https://grievancesbot-actions.onrender.com/webhook"
 
