@@ -202,16 +202,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function checkConnection() {
         try {
-            const response = await fetch(rasaServerUrl, {
-                method: 'OPTIONS',
-                headers: {
-                    'Origin': 'http://localhost:8000',
-                    'Access-Control-Request-Method': 'POST'
-                }
+            // Use GET to Rasa root endpoint instead of OPTIONS to webhook
+            // OPTIONS preflight requests may not be properly handled by Rasa's REST channel
+            const response = await fetch('http://localhost:5005/', {
+                method: 'GET',
+                mode: 'cors'
             });
             updateConnectionStatus(response.ok ? 'connected' : 'disconnected');
             return response.ok;
         } catch (error) {
+            console.error('Connection check failed:', error);
             updateConnectionStatus('disconnected');
             return false;
         }

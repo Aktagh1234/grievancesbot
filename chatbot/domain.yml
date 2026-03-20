@@ -59,7 +59,7 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text  # This gets auto-filled via action_set_email_slot
+      - type: custom
 
   language:
     type: text

@@ -1,6 +1,6 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Any, Text, Dict, List, Optional
+from typing import Any, Text, Dict, List, Optional, Tuple
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
@@ -79,7 +79,7 @@ class TranslationService:
 
 class EmailService:
     @staticmethod
-    def send_email(recipient: str, subject: str, body: str, reply_to: str = None) -> bool:
+    def send_email(recipient: str, subject: str, body: str, reply_to: str = None) -> Tuple[bool, Optional[str]]:
         try:
             from email.message import EmailMessage
             msg = EmailMessage()
@@ -91,22 +91,13 @@ class EmailService:
             msg.set_content(str(body))
             with smtplib.SMTP(str(settings.smtp_server), int(settings.smtp_port)) as server:
                 server.starttls()
-                # --- DEBUG PRINTS ---
-                smtp_username = settings.smtp_username
-                smtp_password = settings.smtp_password
-                print("SMTP_USERNAME:", smtp_username, type(smtp_username))
-                print("SMTP_PASSWORD:", smtp_password, type(smtp_password))
-                if isinstance(smtp_username, bytes):
-                    smtp_username = smtp_username.decode()
-                if isinstance(smtp_password, bytes):
-                    smtp_password = smtp_password.decode()
-                # --- END DEBUG ---
-                server.login(smtp_username, smtp_password)
+                server.login(settings.smtp_username, settings.smtp_password)
                 server.send_message(msg)
-            return True
+            return (True, None)
         except Exception as e:
-            logger.error(f"Email sending failed to {recipient}: {e}")
-            return False
+            error_msg = f"Email sending failed to {recipient}: {e}"
+            logger.error(error_msg)
+            return (False, str(e))
 
 # --------------------------
 # Utilities
@@ -197,14 +188,14 @@ class ActionGenerateDraft(Action):
             ts = TranslationService()
 
             email_text = (
-    f"Subject: Grievance Submission Regarding the {normalize_department(slots['department'])} Department in {slots['area']}, {slots['state']}\n\n"
-    f"Dear Sir/Madam,\n\n"
-    f"I am writing to formally raise a concern regarding an issue related to the {normalize_department(slots['department'])} department in {slots['area']}, {slots['state']}.\n\n"
-    f"Details of the issue:\n{slots['complaint_details']}\n\n"
-    f"I kindly request that this matter be addressed at the earliest convenience.\n\n"
-    f"Thank you for your attention to this issue.\n\n"
-    f"Sincerely,\nA Concerned Citizen"
-)
+                f"Subject: Grievance Submission Regarding the {normalize_department(slots['department'])} Department in {slots['area']}, {slots['state']}\n\n"
+                f"Dear Sir/Madam,\n\n"
+                f"I am writing to formally raise a concern regarding an issue related to the {normalize_department(slots['department'])} department in {slots['area']}, {slots['state']}.\n\n"
+                f"Details of the issue:\n{slots['complaint_details']}\n\n"
+                f"I kindly request that this matter be addressed at the earliest convenience.\n\n"
+                f"Thank you for your attention to this issue.\n\n"
+                f"Sincerely,\nA Concerned Citizen"
+            )
 
             logger.info(f"📧 Draft Email:\n{email_text}")
             dispatcher.utter_message(text=ts.translate("Here is your draft email:\n\n" + email_text, lang, tracker))
@@ -221,17 +212,18 @@ class ActionSubmitComplaint(Action):
     async def run(self, dispatcher, tracker, domain):
         lang = tracker.get_slot("language") or "en"
         ts = TranslationService()
+        complaint_id_val = None  # To hold the complaint ID
+
         try:
             validate_required_slots(tracker)
             state = (tracker.get_slot("state") or "").lower()
             dept = normalize_department(tracker.get_slot("department") or "")
             area = tracker.get_slot("area")
             complaint = tracker.get_slot("complaint_details")
-            sender = tracker.sender_id
             user_email = tracker.get_slot("email")
 
             if not user_email:
-                error_msg = ts.translate("⚠️ Complaint submission failed: Email slot not set. Please provide your email address to receive confirmation.", lang)
+                error_msg = ts.translate("⚠️ Complaint submission failed!", lang)
                 dispatcher.utter_message(text=error_msg)
                 return []
 
@@ -241,61 +233,63 @@ class ActionSubmitComplaint(Action):
                 DEPT_EMAILS.get("default", {}).get("default")
             )
             if not recipient:
-                raise ValueError(f"No email for {dept} in {state}")
+                raise ValueError(f"No email for department '{dept}' in state '{state}'")
 
             now = datetime.now().strftime("%d-%m-%Y %H:%M")
             subject = f"Complaint ID: {complaint_id} - {dept} Issue in {area}, {state}"
             body = (
-                    f"Subject: Grievance Submission – {dept.capitalize()} Department\n\n"
-                    f"Dear Officer,\n\n"
-                    f"This is to inform you that a grievance has been submitted via the Central Grievance Portal.\n\n"
-                    f"🆔 Complaint ID: {complaint_id}\n📅 Date: {now}\n📍 Location: {area}, {state}\n👤 From: {user_email}\n\n"
-                    f"📝 Department Concerned: {dept.capitalize()}\n\n"
-                    f"📄 Complaint Details:\n{complaint}\n\n"
-                    f"---\nThis is an automated email from the Central Grievance Portal.\nPlease do not reply directly to this message."
-                )
+                f"Subject: Grievance Submission – {dept.capitalize()} Department\n\n"
+                f"Dear Officer,\n\n"
+                f"This is to inform you that a grievance has been submitted via the Central Grievance Portal.\n\n"
+                f"🆔 Complaint ID: {complaint_id}\n📅 Date: {now}\n📍 Location: {area}, {state}\n👤 From: {user_email}\n\n"
+                f"📝 Department Concerned: {dept.capitalize()}\n\n"
+                f"📄 Complaint Details:\n{complaint}\n\n"
+                f"---\nThis is an automated email from the Central Grievance Portal.\nPlease do not reply directly to this message."
+            )
+
+            # Send to department and capture the actual error
+            sent_to_dept, error_dept = EmailService.send_email(recipient, subject, body, reply_to=user_email)
+            if not sent_to_dept:
+                # Display the real error in chat
+                error_msg = ts.translate(f"⚠️ Failed to send email to the department. **Reason:** {error_dept}", lang)
+                dispatcher.utter_message(text=error_msg)
+                return [SlotSet("complaint_id", None)]
 
             confirmation_subject = f"Complaint Registered: {complaint_id}"
             confirmation_body = (
-                    f"Dear Citizen,\n\n"
-                    f"✅ Your complaint has been successfully registered with the Central Grievance Portal.\n\n"
-                    f"🆔 Complaint ID: {complaint_id}\n"
-                    f"📅 Date: {now}\n"
-                    f"📍 Location: {area}, {state}\n"
-                    f"🏢 Department: {dept.capitalize()}\n\n"
-                    f"📝 Complaint Details:\n{complaint}\n\n"
-                    f"⏳ Expected Resolution: Within 3–5 working days\n\n"
-                    f"Thank you for helping us improve public services.\n"
-                    f"For queries or updates, please keep this complaint ID handy.\n\n"
-                    f"Regards,\nCentral Grievance Cell"
-                )
+                f"Dear Citizen,\n\n"
+                f"✅ Your complaint has been successfully registered with the Central Grievance Portal.\n\n"
+                f"🆔 Complaint ID: {complaint_id}\n"
+                f"📅 Date: {now}\n"
+                f"📍 Location: {area}, {state}\n"
+                f"🏢 Department: {dept.capitalize()}\n\n"
+                f"📝 Complaint Details:\n{complaint}\n\n"
+                f"⏳ Expected Resolution: Within 3–5 working days\n\n"
+                f"Thank you for helping us improve public services.\n"
+                f"For queries or updates, please keep this complaint ID handy.\n\n"
+                f"Regards,\nCentral Grievance Cell"
+            )
 
-
-            # Send to department with user's email as reply-to
-            sent_to_dept = EmailService.send_email(recipient, subject, body, reply_to=user_email)
-            if not sent_to_dept:
-                error_msg = ts.translate("⚠️ Failed to submit complaint: Could not send email to department.", lang)
-                dispatcher.utter_message(text=error_msg)
-                return []
-
-            # Send confirmation to user (no reply-to needed)
-            sent_to_user = EmailService.send_email(user_email, confirmation_subject, confirmation_body)
+            # Send confirmation to user and capture the actual error
+            sent_to_user, error_user = EmailService.send_email(user_email, confirmation_subject, confirmation_body)
             if not sent_to_user:
-                error_msg = ts.translate("⚠️ Complaint sent to department, but confirmation email to you failed.", lang)
+                # Display the real error in chat
+                error_msg = ts.translate(f"⚠️ Complaint submitted, but failed to send confirmation to your email. **Reason:** {error_user}", lang)
                 dispatcher.utter_message(text=error_msg)
-                return []
+                return [SlotSet("complaint_id", complaint_id)]
 
             # If both succeeded
-            msg = ts.translate(
-                f"✅ Complaint registered successfully! ID: {complaint_id}\n• Department: {dept}\n"
-                f"• Location: {area}, {state}\nA confirmation has been sent to your email.",
-                lang
+            success_msg = ts.translate(
+                f"✅ Complaint registered successfully! Your Complaint ID is **{complaint_id}**.", lang
             )
-            dispatcher.utter_message(text=msg)
+            dispatcher.utter_message(text=success_msg)
+            return [SlotSet("complaint_id", complaint_id)]
 
         except Exception as e:
             logger.error(f"Error in ActionSubmitComplaint: {e}")
-            dispatcher.utter_message(text="Sorry, something went wrong while submitting your complaint.")
+            error_msg = ts.translate(f"Sorry, a critical error occurred: {e}", lang)
+            dispatcher.utter_message(text=error_msg)
+            return [SlotSet("complaint_id", None)]
 
 class ActionAskDepartment(Action):
     def name(self) -> Text:
@@ -319,7 +313,8 @@ class ActionUtterGreet(Action):
         ts = TranslationService()
         msg = ts.translate("Hello! I'm Upaay, your grievance assistant. How can I help you today?", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterAskState(Action):
     def name(self) -> Text:
@@ -330,7 +325,8 @@ class ActionUtterAskState(Action):
         ts = TranslationService()
         msg = ts.translate("Please tell me your state:", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterAskArea(Action):
     def name(self) -> Text:
@@ -342,7 +338,8 @@ class ActionUtterAskArea(Action):
         state = tracker.get_slot("state") or ""
         msg = ts.translate(f"Which area/city in {state} are you facing the issue?", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterAskDepartment(Action):
     def name(self) -> Text:
@@ -353,7 +350,8 @@ class ActionUtterAskDepartment(Action):
         ts = TranslationService()
         msg = ts.translate("Select department of relevance (e.g. Water, Electricity, Land):", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterAskComplaintDetails(Action):
     def name(self) -> Text:
@@ -364,7 +362,8 @@ class ActionUtterAskComplaintDetails(Action):
         ts = TranslationService()
         msg = ts.translate("Describe your complaint in detail (location, duration, and any relevant details):", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterAskConfirmation(Action):
     def name(self) -> Text:
@@ -375,7 +374,8 @@ class ActionUtterAskConfirmation(Action):
         ts = TranslationService()
         msg = ts.translate("Would you like me to send this complaint to the respective department?", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterThankYou(Action):
     def name(self) -> Text:
@@ -387,7 +387,8 @@ class ActionUtterThankYou(Action):
         complaint_id = tracker.get_slot("complaint_id") or ""
         msg = ts.translate(f"Thank you! Your complaint has been registered with ID {complaint_id}.", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]
+
 
 class ActionUtterGoodbye(Action):
     def name(self) -> Text:
@@ -398,4 +399,4 @@ class ActionUtterGoodbye(Action):
         ts = TranslationService()
         msg = ts.translate("Goodbye! Feel free to reach out again if you need help.", lang, tracker)
         dispatcher.utter_message(text=msg)
-        return []
+        return [SlotSet("requested_slot", None)]

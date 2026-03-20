@@ -2,7 +2,7 @@ version: "3.1"
 
 rules:
 
-- rule: Greet and detect language
+- rule: Greet and begin conversation
   steps:
     - intent: greet
     - action: action_set_email_slot
@@ -10,8 +10,34 @@ rules:
     - action: action_utter_greet
     - action: action_utter_ask_state
 
-- rule: Submit complaint after confirmation
+- rule: Handle State Provided
+  steps:
+    - intent: provide_state
+    - action: action_utter_ask_area
+
+- rule: Handle Area Provided
+  steps:
+    - intent: provide_area
+    - action: action_utter_ask_department
+
+- rule: Handle Department Provided
+  steps:
+    - intent: provide_department
+    - action: action_utter_ask_complaint_details
+
+- rule: Handle Complaint Provided
+  steps:
+    - intent: provide_complaint_details
+    - action: action_generate_draft
+    - action: action_utter_ask_confirmation
+
+- rule: Submit Complaint
   steps:
     - intent: confirm
     - action: action_submit_complaint
     - action: action_utter_thank_you
+
+- rule: Cancel Complaint Submission
+  steps:
+    - intent: deny
+    - action: action_utter_goodbye
