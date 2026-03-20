@@ -11,6 +11,7 @@ try:
     from functools import wraps
 
     app = Flask(__name__)
+    print("🚀 INIT: Starting API with Flask-SQLAlchemy 3.x pins (Cache Bust V2) 🚀")
 
     # CORS - allow all origins for Vercel deployment
     CORS(app, resources={
